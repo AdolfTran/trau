@@ -7,3 +7,9 @@ Route::any('/profile', 'HomeController@profile');
 Route::any('/change_pass', 'HomeController@change');
 
 Route::resource('homes', 'homeController');
+
+Route::resource('customers', 'CustomerController');
+
+Route::resource('machines', 'MachineController');
+
+Route::resource('employees', 'EmployeeController');
