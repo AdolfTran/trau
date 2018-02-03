@@ -1,42 +1,42 @@
 <!-- Name Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('name', 'Name:') !!}
+    {!! Form::label('name', __('messages.name') . ':') !!}
     {!! Form::text('name', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Phone Number Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('phone_number', 'Phone Number:') !!}
+    {!! Form::label('phone_number', __('messages.phone_number') . ':') !!}
     {!! Form::text('phone_number', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Address Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('address', 'Address:') !!}
+    {!! Form::label('address', __('messages.address') . ':') !!}
     {!! Form::text('address', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Date Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('date', 'Date:') !!}
+    {!! Form::label('date', __('messages.date') . ':') !!}
     {!! Form::text('date', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Salary Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('salary', 'Salary:') !!}
+    {!! Form::label('salary', __('messages.salary') . ':') !!}
     {!! Form::text('salary', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Day Work Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('day_work', 'Day work:') !!}
+    {!! Form::label('day_work', __('messages.day_work') . ':') !!}
     {!! Form::number('day_work', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Over time Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('over_time', 'Over time:') !!}
+    {!! Form::label('over_time', __('messages.over_time') . ':') !!}
     {!! Form::number('over_time', null, ['class' => 'form-control']) !!}
 </div>
 

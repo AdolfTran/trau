@@ -1,15 +1,15 @@
 <table class="table table-responsive" id="employees-table">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Phone Number</th>
-            <th>Address</th>
-            <th>Date</th>
-            <th>Salary</th>
-            <th>Day work</th>
-            <th>Over time</th>
-            <th colspan="3">Action</th>
+            <th>{{ __('messages.id') }}</th>
+            <th>{{ __('messages.name') }}</th>
+            <th>{{ __('messages.phone_number') }}</th>
+            <th>{{ __('messages.address') }}</th>
+            <th>{{ __('messages.date') }}</th>
+            <th>{{ __('messages.salary') }}</th>
+            <th>{{ __('messages.day_work') }}</th>
+            <th>{{ __('messages.over_time') }}</th>
+            <th colspan="3">{{ __('messages.action') }}</th>
         </tr>
     </thead>
     <tbody>

@@ -6,6 +6,7 @@ use App\Http\Requests\CreateEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Repositories\EmployeeRepository;
 use App\Http\Controllers\AppBaseController;
+use App\User;
 use Illuminate\Http\Request;
 use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -29,8 +30,9 @@ class EmployeeController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $this->employeeRepository->pushCriteria(new RequestCriteria($request));
-        $employees = $this->employeeRepository->all();
+//        $this->employeeRepository->pushCriteria(new RequestCriteria($request));
+//        $employees = $this->employeeRepository->all();
+        $employees = User::where('role' , 3)->get();
 
         return view('employees.index')
             ->with('employees', $employees);
@@ -73,7 +75,7 @@ class EmployeeController extends AppBaseController
      */
     public function show($id)
     {
-        $employee = $this->employeeRepository->findWithoutFail($id);
+        $employee = User::findOrFail($id);;
 
         if (empty($employee)) {
             Flash::error('Employee not found');
@@ -93,7 +95,7 @@ class EmployeeController extends AppBaseController
      */
     public function edit($id)
     {
-        $employee = $this->employeeRepository->findWithoutFail($id);
+        $employee = User::findOrFail($id);
 
         if (empty($employee)) {
             Flash::error('Employee not found');
@@ -138,6 +140,7 @@ class EmployeeController extends AppBaseController
      */
     public function destroy($id)
     {
+        dd(1);
         $employee = $this->employeeRepository->findWithoutFail($id);
 
         if (empty($employee)) {

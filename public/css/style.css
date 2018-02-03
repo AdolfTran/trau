@@ -1,0 +1,58 @@
+.box .box-primary{
+    max-width: 1100px
+}
+.box-body{
+    overflow-x: auto
+}
+body {
+    background: #f7f7f7;
+    color: #333;
+    font: 90%/1.45em "Helvetica Neue",HelveticaNeue,Verdana,Arial,Helvetica,sans-serif;
+    font-size: 13px;
+}
+input[type=checkbox]
+{
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(2); /* IE */
+    -moz-transform: scale(2); /* FF */
+    -webkit-transform: scale(2); /* Safari and Chrome */
+    -o-transform: scale(2); /* Opera */
+    padding: 20px;
+}
+
+/* Might want to wrap a span around your checkbox text */
+.checkboxtext
+{
+    /* Checkbox text */
+    font-size: 110%;
+    display: inline;
+    padding-left:10px;
+    padding-right:10px;
+}
+td.highlight-failed {
+    color: black;
+    background-color:red;
+}
+td.highlight-ok {
+    color: black;
+    background-color:white;
+}
+td.highlight-warning {
+    color: black;
+    background-color:orange;
+}
+span.highlight {
+    font-weight: bold;
+    color: white;
+    background-color:red;
+}
+.table-block {
+    padding: 3%;
+}
+div.container {
+    width: 100%;
+}
+
+.dataTables tbody tr {
+    min-height:10px;
+}

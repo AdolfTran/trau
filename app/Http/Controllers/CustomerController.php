@@ -6,6 +6,7 @@ use App\Http\Requests\CreateCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Repositories\CustomerRepository;
 use App\Http\Controllers\AppBaseController;
+use App\User;
 use Illuminate\Http\Request;
 use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -29,8 +30,9 @@ class CustomerController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $this->customerRepository->pushCriteria(new RequestCriteria($request));
-        $customers = $this->customerRepository->all();
+//        $this->customerRepository->pushCriteria(new RequestCriteria($request));
+//        $customers = $this->customerRepository->all();
+        $customers = User::where('role' , 3)->get();
 
         return view('customers.index')
             ->with('customers', $customers);
@@ -73,7 +75,7 @@ class CustomerController extends AppBaseController
      */
     public function show($id)
     {
-        $customer = $this->customerRepository->findWithoutFail($id);
+        $customer = User::findOrFail($id);
 
         if (empty($customer)) {
             Flash::error('Customer not found');
@@ -93,7 +95,7 @@ class CustomerController extends AppBaseController
      */
     public function edit($id)
     {
-        $customer = $this->customerRepository->findWithoutFail($id);
+        $customer  = User::findOrFail($id);;
 
         if (empty($customer)) {
             Flash::error('Customer not found');

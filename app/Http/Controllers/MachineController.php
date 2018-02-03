@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateMachineRequest;
 use App\Http\Requests\UpdateMachineRequest;
+use App\Models\home;
 use App\Repositories\MachineRepository;
-use App\Http\Controllers\AppBaseController;
+use App\User;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -29,11 +31,8 @@ class MachineController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $this->machineRepository->pushCriteria(new RequestCriteria($request));
-        $machines = $this->machineRepository->all();
 
-        return view('machines.index')
-            ->with('machines', $machines);
+        return view('machines.index');
     }
 
     /**
@@ -73,7 +72,7 @@ class MachineController extends AppBaseController
      */
     public function show($id)
     {
-        $machine = $this->machineRepository->findWithoutFail($id);
+        $machine = home::findOrFail($id);
 
         if (empty($machine)) {
             Flash::error('Machine not found');
@@ -93,7 +92,8 @@ class MachineController extends AppBaseController
      */
     public function edit($id)
     {
-        $machine = $this->machineRepository->findWithoutFail($id);
+        $machine = home::findOrFail($id);
+        $users = User::where('role', 3)->pluck('name', 'id');
 
         if (empty($machine)) {
             Flash::error('Machine not found');
@@ -101,7 +101,7 @@ class MachineController extends AppBaseController
             return redirect(route('machines.index'));
         }
 
-        return view('machines.edit')->with('machine', $machine);
+        return view('machines.edit')->with('machine', $machine)->with('users', $users);
     }
 
     /**
@@ -112,17 +112,17 @@ class MachineController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdateMachineRequest $request)
+    public function update($id, Request $request)
     {
-        $machine = $this->machineRepository->findWithoutFail($id);
+        $machine = home::findOrFail($id);
 
         if (empty($machine)) {
             Flash::error('Machine not found');
 
             return redirect(route('machines.index'));
         }
-
-        $machine = $this->machineRepository->update($request->all(), $id);
+        $user_id = $request->all('user_id');
+        $machine = home::where('id', $id)->update(['user_id' => $user_id['user_id']]);
 
         Flash::success('Machine updated successfully.');
 
@@ -147,6 +147,53 @@ class MachineController extends AppBaseController
         }
 
         $this->machineRepository->delete($id);
+
+        Flash::success('Machine deleted successfully.');
+
+        return redirect(route('machines.index'));
+    }
+
+    public function getDataForDataTable()
+    {
+        if(Auth::user() &&  Auth::user()->role == 3){
+            $machines = home::where('user_id', Auth::user()->id)->get();
+        } else {
+            $machines = home::all();
+        }
+        $data = array();
+        foreach($machines  as $machine)
+        {
+            $nestedData[0] = $machine["worker1"] ? $machine["worker1"] : "Device name";
+            $nestedData[1] = $machine["ip"] ? $machine["ip"] : "0.0.0.0";
+            $nestedData[2] = $machine["type"] ? $machine["type"] : "N/A";
+            $nestedData[3] = $machine["pool1"] ? $machine["pool1"] : "N/A";
+            $nestedData[4] = $machine["hash_rate_5s"] ? $machine["hash_rate_5s"] : "0";
+            $nestedData[5] = $machine["temp"] ? $machine["temp"] : "0";
+            $nestedData[6] = $machine["temp"] ? $machine["temp"] : "0";
+            $nestedData[7] = $machine["elapsed"] ? $machine["elapsed"] : "0";
+            $nestedData[8] = $machine["update_time"] ? $machine["update_time"] : "N/A";
+            $nestedData[9] = $machine["status"] ? $machine["status"] : "SUCCESS";
+            $nestedData[10] = $machine["id"] ? $machine["id"] : null;
+            $data[] = $nestedData;
+        }
+        $json_data = array(
+            "data" => $data   // total data array
+        );
+
+        return json_encode($json_data);
+    }
+
+    public function deleted($id)
+    {
+        $machine = home::findOrFail($id);
+
+        if (empty($machine)) {
+            Flash::error('Machine not found');
+
+            return redirect(route('machines.index'));
+        }
+
+        home::where('id')->delete();
 
         Flash::success('Machine deleted successfully.');
 

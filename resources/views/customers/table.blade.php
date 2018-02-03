@@ -1,13 +1,13 @@
 <table class="table table-responsive" id="customers-table">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Phonenumber</th>
-            <th>Email</th>
-            <th>Contract signing date</th>
-            <th colspan="3">Action</th>
+            <th>{{ __('messages.id') }}</th>
+            <th>{{ __('messages.name') }}</th>
+            <th>{{ __('messages.address') }}</th>
+            <th>{{ __('messages.phone_number') }}</th>
+            <th>{{ __('messages.email') }}</th>
+            <th>{{ __('messages.contract_siging_date') }}</th>
+            <th colspan="3">{{ __('messages.action') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -23,8 +23,10 @@
                 {!! Form::open(['route' => ['customers.destroy', $customer->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
                     <a href="{!! route('customers.show', [$customer->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>
-                    <a href="{!! route('customers.edit', [$customer->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>
+{{--                    <a href="{!! route('customers.edit', [$customer->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>--}}
+                    <?php if(Auth::user() &&  Auth::user()->role == 1){ ?>
                     {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                    <?php } ?>
                 </div>
                 {!! Form::close() !!}
             </td>

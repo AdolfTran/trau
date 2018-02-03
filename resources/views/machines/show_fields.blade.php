@@ -1,49 +1,67 @@
 <!-- Id Field -->
 <div class="form-group">
-    {!! Form::label('id', 'Id:') !!}
+    {!! Form::label('id', __('messages.id') . ':') !!}
     <p>{!! $machine->id !!}</p>
 </div>
 
 <!-- Name Field -->
 <div class="form-group">
-    {!! Form::label('name', 'Name:') !!}
-    <p>{!! $machine->name !!}</p>
+    {!! Form::label('name', __('messages.name') . ':') !!}
+    <p>{!! $machine->worker1 !!}</p>
 </div>
 
-<!-- Date Field -->
+<!-- ip Field -->
 <div class="form-group">
-    {!! Form::label('date', 'Date:') !!}
-    <p>{!! $machine->date !!}</p>
+    {!! Form::label('ip', __('messages.ip') . ':') !!}
+    <p>{!! $machine->ip !!}</p>
 </div>
 
-<!-- Status Field -->
+<!-- type Field -->
 <div class="form-group">
-    {!! Form::label('status', 'Status:') !!}
-    <p>{!! $machine->status !!}</p>
+    {!! Form::label('type', __('messages.type') . ':') !!}
+    <p>{!! $machine->type !!}</p>
 </div>
 
 <!-- Ip Field -->
 <div class="form-group">
-    {!! Form::label('ip', 'Ip:') !!}
-    <p>{!! $machine->ip !!}</p>
+    {!! Form::label('pool1', __('messages.pool1') . ':') !!}
+    <p>{!! $machine->pool1 !!}</p>
 </div>
 
-<!-- Sale place Field -->
+<!-- hash_rate_5s Field -->
 <div class="form-group">
-    {!! Form::label('sale_place', 'Sale place:') !!}
-    <p>{!! $machine->sale_place !!}</p>
+    {!! Form::label('hash_rate_5s', __('messages.hash_rate_5s') . ':') !!}
+    <p>{!! $machine->hash_rate_5s !!}</p>
 </div>
 
-<!-- Code Field -->
+<!-- temp Field -->
 <div class="form-group">
-    {!! Form::label('code', 'Code:') !!}
-    <p>{!! $machine->code !!}</p>
+    {!! Form::label('temp', __('messages.temp') . ':') !!}
+    <p>{!! $machine->temp !!}</p>
 </div>
 
-<!-- Price Field -->
+<!-- temp Field -->
 <div class="form-group">
-    {!! Form::label('price', 'Price:') !!}
-    <p>{!! $machine->price !!}</p>
+    {!! Form::label('temp', __('messages.temp') . ':') !!}
+    <p>{!! $machine->temp !!}</p>
+</div>
+
+<!-- elapsed Field -->
+<div class="form-group">
+    {!! Form::label('elapsed', __('messages.elapsed') . ':') !!}
+    <p>{!! $machine->elapsed !!}</p>
+</div>
+
+<!-- update_time Field -->
+<div class="form-group">
+    {!! Form::label('update_time', __('messages.update_time') . ':') !!}
+    <p>{!! $machine->update_time !!}</p>
+</div>
+
+<!-- status Field -->
+<div class="form-group">
+    {!! Form::label('status', __('messages.status') . ':') !!}
+    <p>{!! $machine->status !!}</p>
 </div>
 
 

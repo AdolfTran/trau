@@ -2,31 +2,31 @@
 
 <!-- Name Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('name', 'Name:') !!}
+    {!! Form::label('name', __('messages.name') . ':') !!}
     {!! Form::text('name', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Address Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('address', 'Address:') !!}
+    {!! Form::label('address', __('messages.address') . ":")  !!}
     {!! Form::text('address', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Phonenumber Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('phonenumber', 'Phonenumber:') !!}
+    {!! Form::label('phonenumber', __('messages.phone_number') . ":")  !!}
     {!! Form::number('phonenumber', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Email Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('email', 'Email:') !!}
+    {!! Form::label('email', __('messages.email') . ":")  !!}
     {!! Form::text('email', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Contract signing date Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('date', 'Contract signing date:') !!}
+    {!! Form::label('date', __('messages.contract_siging_date') . ":") !!}
     {!! Form::text('date', null, ['class' => 'form-control']) !!}
 </div>
 

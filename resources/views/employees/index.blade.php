@@ -2,9 +2,9 @@
 
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">Employees</h1>
+        <h1 class="pull-left">{{ __('messages.employees') }}</h1>
         <h1 class="pull-right">
-           <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('employees.create') !!}">Add New</a>
+           <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('employees.create') !!}">{{ __('messages.add_new') }}</a>
         </h1>
     </section>
     <div class="content">
