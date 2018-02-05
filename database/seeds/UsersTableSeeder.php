@@ -16,6 +16,8 @@ class UsersTableSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('Password1234!@'),
+            'phonenumber' => '0973298829',
+            'date' => '1991-10-10',
         ]);
     }
 }
