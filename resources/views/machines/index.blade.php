@@ -30,7 +30,7 @@
             var dataTable = $('#machines-table').DataTable({
                 "processing": false,
                 // "serverSide": true,
-                // "paging": false,
+                "paging": false,
                 "searching": false,
                 // "bInfo" : false,
                 "bDestroy": true,
@@ -56,12 +56,12 @@
                     $('td', row).eq(5).text(arr.length);
                     $('td', row).eq(6).text(arr[arr.length-1]);
                 },
-                "columnDefs": [{
-                    "targets": 10,
-                    "data": null,
-                    "defaultContent": "<a class='btn btn-default btn-xs' data-type='edit'><i class=\"glyphicon glyphicon-edit\"></i></a>" +
-                    "<a class='btn btn-danger btn-xs' data-type='delete'><i class=\"glyphicon glyphicon-trash\"></i></a>"
-                }]
+                // "columnDefs": [{
+                //     "targets": 10,
+                //     "data": null,
+                //     "defaultContent": "<a class='btn btn-default btn-xs' data-type='edit'><i class=\"glyphicon glyphicon-edit\"></i></a>" +
+                //     "<a class='btn btn-danger btn-xs' data-type='delete'><i class=\"glyphicon glyphicon-trash\"></i></a>"
+                // }]
             });
 
             setInterval(function(){

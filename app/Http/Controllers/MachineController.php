@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Flash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -156,24 +157,23 @@ class MachineController extends AppBaseController
     public function getDataForDataTable()
     {
         if(Auth::user() &&  Auth::user()->role == 3){
-            $machines = home::where('user_id', Auth::user()->id)->get();
+            $machines = DB::table('tb_devices')->where('user_id', 1)->get();
         } else {
-            $machines = home::all();
+            $machines = DB::table('tb_devices')->get();
         }
         $data = array();
         foreach($machines  as $machine)
         {
-            $nestedData[0] = $machine["worker1"] ? $machine["worker1"] : "Device name";
-            $nestedData[1] = $machine["ip"] ? $machine["ip"] : "0.0.0.0";
-            $nestedData[2] = $machine["type"] ? $machine["type"] : "N/A";
-            $nestedData[3] = $machine["pool1"] ? $machine["pool1"] : "N/A";
-            $nestedData[4] = $machine["hash_rate_5s"] ? $machine["hash_rate_5s"] : "0";
-            $nestedData[5] = $machine["temp"] ? $machine["temp"] : "0";
-            $nestedData[6] = $machine["temp"] ? $machine["temp"] : "0";
-            $nestedData[7] = $machine["elapsed"] ? $machine["elapsed"] : "0";
-            $nestedData[8] = $machine["update_time"] ? $machine["update_time"] : "N/A";
-            $nestedData[9] = $machine["status"] ? $machine["status"] : "SUCCESS";
-            $nestedData[10] = $machine["id"] ? $machine["id"] : null;
+            $nestedData[0] = $machine->worker1 ? $machine->worker1 : "Device name";
+            $nestedData[1] = $machine->ip ? $machine->ip : "0.0.0.0";
+            $nestedData[2] = $machine->type ? $machine->type : "N/A";
+            $nestedData[3] = $machine->pool1 ? $machine->pool1 : "N/A";
+            $nestedData[4] = $machine->hash_rate_5s ? $machine->hash_rate_5s : "0";
+            $nestedData[5] = $machine->temp ? $machine->temp : "0";
+            $nestedData[6] = $machine->temp ? $machine->temp : "0";
+            $nestedData[7] = $machine->elapsed ? $machine->elapsed : "0";
+            $nestedData[8] = $machine->update_time ? $machine->update_time : "N/A";
+            $nestedData[9] = $machine->status ? $machine->status : "SUCCESS";
             $data[] = $nestedData;
         }
         $json_data = array(

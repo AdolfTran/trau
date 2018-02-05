@@ -2,7 +2,8 @@
     max-width: 1100px
 }
 .box-body{
-    overflow-x: auto
+    overflow: auto;
+    max-height: 770px;
 }
 body {
     background: #f7f7f7;

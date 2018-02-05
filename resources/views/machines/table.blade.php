@@ -11,7 +11,7 @@
             <th>{{ __('messages.elapsed') }}</th>
             <th>{{ __('messages.update_time') }}</th>
             <th>{{ __('messages.status') }}</th>
-            <th colspan="3">{{ __('messages.action') }}</th>
+{{--            <th colspan="3">{{ __('messages.action') }}</th>--}}
         </tr>
     </thead>
 </table>
