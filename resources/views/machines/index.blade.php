@@ -38,7 +38,7 @@
                 "order": [[ 4, "desc" ]],
                 "sZeroRecords":":|",
                 "ajax":{
-                    url :"/data_json"
+                    url :"data_json"
                 },
                 "createdRow": function ( row, data, index ) {
                     if (data[9] == 'SUCCESS' ) {
