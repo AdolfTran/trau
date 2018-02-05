@@ -4,10 +4,16 @@
     {!! Form::text('name', null, ['class' => 'form-control']) !!}
 </div>
 
+<!-- Email Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('email', __('messages.email') . ':') !!}
+    {!! Form::text('email', null, ['class' => 'form-control']) !!}
+</div>
+
 <!-- Phone Number Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('phone_number', __('messages.phone_number') . ':') !!}
-    {!! Form::text('phone_number', null, ['class' => 'form-control']) !!}
+    {!! Form::label('phonenumber', __('messages.phone_number') . ':') !!}
+    {!! Form::text('phonenumber', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Address Field -->

@@ -58,12 +58,19 @@ class CustomerController extends AppBaseController
     public function store(CreateCustomerRequest $request)
     {
         $input = $request->all();
+        $_password = rand(111111, 999999);
+        $password = bcrypt($_password);
+        $input['password'] = $password;
+        $input['role'] = 3;
 
-        $customer = $this->customerRepository->create($input);
+        User::create($input);
 
-        Flash::success('Customer saved successfully.');
+        Flash::success('Customers saved successfully.');
 
-        return redirect(route('customers.index'));
+        $customer = $input;
+        return view('customers.show')
+            ->with('customer', $customer)
+            ->with('_password', $_password);
     }
 
     /**
@@ -116,15 +123,20 @@ class CustomerController extends AppBaseController
      */
     public function update($id, UpdateCustomerRequest $request)
     {
-        $customer = $this->customerRepository->findWithoutFail($id);
+        $customer = User::findOrFail($id);
 
         if (empty($customer)) {
             Flash::error('Customer not found');
 
             return redirect(route('customers.index'));
         }
+        $input['name'] = $request->all()['name'];
+        $input['email'] = $request->all()['email'];
+        $input['phonenumber'] = $request->all()['phonenumber'];
+        $input['address'] = $request->all()['address'];
+        $input['date'] = $request->all()['date'];
 
-        $customer = $this->customerRepository->update($request->all(), $id);
+        $customer = User::where('id', $id)->update($input);
 
         Flash::success('Customer updated successfully.');
 
@@ -140,7 +152,7 @@ class CustomerController extends AppBaseController
      */
     public function destroy($id)
     {
-        $customer = $this->customerRepository->findWithoutFail($id);
+        $customer = User::findOrFail($id);
 
         if (empty($customer)) {
             Flash::error('Customer not found');
@@ -148,7 +160,7 @@ class CustomerController extends AppBaseController
             return redirect(route('customers.index'));
         }
 
-        $this->customerRepository->delete($id);
+        User::where('id', $id)->delete();
 
         Flash::success('Customer deleted successfully.');
 

@@ -1,8 +1,8 @@
-<?php if(Auth::user() &&  Auth::user()->role == 1){ ?>
-<li class="{{ Request::is('homes*') ? 'active' : '' }}">
-    <a href="{!! route('homes.index') !!}"><i class="fa fa-edit"></i><span>{!! __('messages.home') !!}</span></a>
-</li>
-<?php } ?>
+{{--<?php if(Auth::user() &&  Auth::user()->role == 1){ ?>--}}
+{{--<li class="{{ Request::is('homes*') ? 'active' : '' }}">--}}
+    {{--<a href="{!! route('homes.index') !!}"><i class="fa fa-edit"></i><span>{!! __('messages.home') !!}</span></a>--}}
+{{--</li>--}}
+{{--<?php } ?>--}}
 
 <?php if(Auth::user() &&  (Auth::user()->role == 1 || Auth::user()->role == 2)){ ?>
 <li class="{{ Request::is('customers*') ? 'active' : '' }}">

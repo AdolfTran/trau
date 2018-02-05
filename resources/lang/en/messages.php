@@ -29,4 +29,5 @@ return [
     'user' => 'Khách hàng',
     'home' => 'Trang chủ',
     'trau' => 'Trâu',
+    'password' => 'Mật khẩu',
 ];

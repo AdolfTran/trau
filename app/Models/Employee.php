@@ -51,10 +51,7 @@ class Employee extends Model
      */
     public static $rules = [
         'name' => 'required',
-        'phone_number' => 'required',
-        'address' => 'required',
-        'date' => 'required',
-        'salary' => 'required'
+        'email' => 'email|required'
     ];
 
     

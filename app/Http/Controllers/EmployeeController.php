@@ -32,7 +32,7 @@ class EmployeeController extends AppBaseController
     {
 //        $this->employeeRepository->pushCriteria(new RequestCriteria($request));
 //        $employees = $this->employeeRepository->all();
-        $employees = User::where('role' , 3)->get();
+        $employees = User::where('role' , 2)->get();
 
         return view('employees.index')
             ->with('employees', $employees);
@@ -58,12 +58,19 @@ class EmployeeController extends AppBaseController
     public function store(CreateEmployeeRequest $request)
     {
         $input = $request->all();
+        $_password = rand(111111, 999999);
+        $password = bcrypt($_password);
+        $input['password'] = $password;
+        $input['role'] = 2;
 
-        $employee = $this->employeeRepository->create($input);
+        User::create($input);
 
         Flash::success('Employee saved successfully.');
 
-        return redirect(route('employees.index'));
+        $employee = $input;
+        return view('employees.show')
+            ->with('employee', $employee)
+            ->with('_password', $_password);
     }
 
     /**
@@ -116,15 +123,22 @@ class EmployeeController extends AppBaseController
      */
     public function update($id, UpdateEmployeeRequest $request)
     {
-        $employee = $this->employeeRepository->findWithoutFail($id);
+        $employee = User::findOrFail($id);
 
         if (empty($employee)) {
             Flash::error('Employee not found');
 
             return redirect(route('employees.index'));
         }
-
-        $employee = $this->employeeRepository->update($request->all(), $id);
+        $input['name'] = $request->all()['name'];
+        $input['email'] = $request->all()['email'];
+        $input['phonenumber'] = $request->all()['phonenumber'];
+        $input['address'] = $request->all()['address'];
+        $input['date'] = $request->all()['date'];
+        $input['salary'] = $request->all()['salary'];
+        $input['day_work'] = $request->all()['day_work'];
+        $input['over_time'] = $request->all()['over_time'];
+        $employee = User::where('id', $id)->update($input);
 
         Flash::success('Employee updated successfully.');
 
@@ -140,8 +154,7 @@ class EmployeeController extends AppBaseController
      */
     public function destroy($id)
     {
-        dd(1);
-        $employee = $this->employeeRepository->findWithoutFail($id);
+        $employee = User::findOrFail($id);
 
         if (empty($employee)) {
             Flash::error('Employee not found');
@@ -149,7 +162,7 @@ class EmployeeController extends AppBaseController
             return redirect(route('employees.index'));
         }
 
-        $this->employeeRepository->delete($id);
+        User::where('id', $id)->delete();
 
         Flash::success('Employee deleted successfully.');
 

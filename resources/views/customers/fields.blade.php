@@ -6,6 +6,12 @@
     {!! Form::text('name', null, ['class' => 'form-control']) !!}
 </div>
 
+<!-- Email Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('email', __('messages.email') . ":")  !!}
+    {!! Form::text('email', null, ['class' => 'form-control']) !!}
+</div>
+
 <!-- Address Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('address', __('messages.address') . ":")  !!}
@@ -16,12 +22,6 @@
 <div class="form-group col-sm-6">
     {!! Form::label('phonenumber', __('messages.phone_number') . ":")  !!}
     {!! Form::number('phonenumber', null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- Email Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('email', __('messages.email') . ":")  !!}
-    {!! Form::text('email', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Contract signing date Field -->
