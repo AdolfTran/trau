@@ -30,4 +30,12 @@ return [
     'home' => 'Trang chủ',
     'trau' => 'Trâu',
     'password' => 'Mật khẩu',
+    'a_machines' => 'Quản lý máy Bitmain',
+    'a_pc' => 'Quản lý PC',
+    'a_customers' => 'Quản lý khách hàng',
+    'a_employees' => 'Quản lý nhân viên',
+    'a_revenue' => 'Quản lý doanh thu',
+    'a_items' => 'Quản lý mặt hàng',
+    'a_report' => 'Thống kê, report',
+    'a_order' => 'In xuất hóa đơn',
 ];
