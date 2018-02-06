@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomerDevice;
 use App\Http\Requests\CreateCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Repositories\CustomerRepository;
@@ -9,6 +10,7 @@ use App\Http\Controllers\AppBaseController;
 use App\User;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\DB;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -176,7 +178,8 @@ class CustomerController extends AppBaseController
 
             return redirect(route('customers.index'));
         }
+        $machines = DB::table('tb_customer_devices')->where('user_id', $id)->get();
 
-        return view('machines.show')->with('customer', $customer);
+        return view('machines.show')->with('customer', $customer)->with('machines', $machines);
     }
 }

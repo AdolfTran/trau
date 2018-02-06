@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>{!! __('messages.trau') !!}</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap 3.3.7 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{!! url('') !!}/css/style.css">
 
     @yield('css')
 </head>

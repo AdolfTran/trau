@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Flash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 class MachineController extends AppBaseController
@@ -145,7 +144,7 @@ class MachineController extends AppBaseController
     public function getDataForDataTable()
     {
         if(Auth::user() &&  Auth::user()->role == 3){
-            $machines = DB::table('tb_devices')->where('user_id', 1)->get();
+            $machines = DB::table('tb_devices')->where('user_id', Auth::user()->id)->get();
         } else {
             $machines = DB::table('tb_devices')->get();
         }
@@ -186,5 +185,31 @@ class MachineController extends AppBaseController
         Flash::success('Machine deleted successfully.');
 
         return redirect(route('machines.index'));
+    }
+
+    public function addMachines(Request $request)
+    {
+        $data = $request->all();
+        if(!empty($data)){
+            if($data['id'] == "") {
+                DB::table('tb_customer_devices')->insert($data);
+            } else {
+                DB::table('tb_customer_devices')->where('id', $data['id'])->update($data);
+            }
+        }
+        return json_encode(1);
+    }
+
+    public function removeMachines(Request $request)
+    {
+        $data = $request->all();
+        if(!empty($data)){
+            foreach ($data['data'] as $id){
+                if($id){
+                    DB::table('tb_customer_devices')->where('id', $id)->delete();
+                }
+            }
+        }
+        return json_encode(1);
     }
 }

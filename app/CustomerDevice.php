@@ -9,7 +9,7 @@ class CustomerDevice extends Model
 {
     use SoftDeletes;
 
-    public $table = 'customers';
+    public $table = 'tb_customer_devices';
 
 
     protected $dates = ['deleted_at'];

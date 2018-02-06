@@ -2,6 +2,8 @@
 Auth::routes();
 
 
+Route::post('addMachines')->uses('MachineController@addMachines')->name('addMachines');
+Route::post('removeMachines')->uses('MachineController@removeMachines')->name('removeMachines');
 Route::group(['middleware' => 'admin'], function () {
     Route::resource('homes', 'homeController');
     Route::resource('employees', 'EmployeeController');
