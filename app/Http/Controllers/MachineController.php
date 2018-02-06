@@ -115,19 +115,7 @@ class MachineController extends AppBaseController
      */
     public function update($id, Request $request)
     {
-        $machine = home::findOrFail($id);
-
-        if (empty($machine)) {
-            Flash::error('Machine not found');
-
-            return redirect(route('machines.index'));
-        }
-        $user_id = $request->all('user_id');
-        $machine = home::where('id', $id)->update(['user_id' => $user_id['user_id']]);
-
-        Flash::success('Machine updated successfully.');
-
-        return redirect(route('machines.index'));
+        dd($request);
     }
 
     /**

@@ -14,7 +14,7 @@
     @foreach($customers as $customer)
         <tr>
             <td>{!! $customer->id !!}</td>
-            <td>{!! $customer->name !!}</td>
+            <td><a href="{!! '/customers/add/' . $customer->id !!}">{!! $customer->name !!}</a></td>
             <td>{!! $customer->address !!}</td>
             <td>{!! $customer->phonenumber !!}</td>
             <td>{!! $customer->email !!}</td>

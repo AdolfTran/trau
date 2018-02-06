@@ -38,4 +38,9 @@ return [
     'a_items' => 'Quản lý mặt hàng',
     'a_report' => 'Thống kê, report',
     'a_order' => 'In xuất hóa đơn',
+    'add_machines' => 'Thêm máy',
+    'name_machines' => 'Tên máy',
+    'send_date' => 'Ngày gửi',
+    'send_price' => 'Giá gửi',
+    'list' => 'Danh sách',
 ];

@@ -166,4 +166,17 @@ class CustomerController extends AppBaseController
 
         return redirect(route('customers.index'));
     }
+
+    public function add($id)
+    {
+        $customer = User::findOrFail($id);
+
+        if (empty($customer)) {
+            Flash::error('Customer not found');
+
+            return redirect(route('customers.index'));
+        }
+
+        return view('machines.show')->with('customer', $customer);
+    }
 }
