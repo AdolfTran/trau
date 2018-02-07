@@ -11,7 +11,7 @@ Route::group(['middleware' => 'admin'], function () {
 
 Route::group(['middleware' => 'editor'], function () {
     Route::any('deleted/{id}', 'MachineController@deleted');
-    Route::get('/customers/add/{id}', 'CustomerController@add');
+    Route::get('/customers/add/{id}', 'CustomerController@add')->name('addCustomers');
     Route::resource('customers', 'CustomerController');
 });
 
