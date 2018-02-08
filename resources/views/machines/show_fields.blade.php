@@ -103,7 +103,7 @@
                 <!-- send_date Field -->
                 <div class="form-group col-sm-6">
                     <label for="send_date">{!! __('messages.send_date') . '*:' !!}</label>
-                    <input class="form-control" name="send_date" type="text" id="send_date">
+                    <input class="form-control" name="send_date" type="text" id="send_date" data-provide = 'datepicker' data-date-format ='dd/mm/yyyy'>
                 </div>
 
                 <!-- status Field -->
@@ -121,7 +121,7 @@
                 <!-- sale_place Field -->
                 <div class="form-group col-sm-6">
                     <label for="sale_place">{!! __('messages.sale_place') . ':' !!}</label>
-                    <input class="form-control" name="sale_place" type="text" id="sale_place">
+                    <input class="form-control" name="sale_place" type="text" id="sale_place" data-provide = 'datepicker' data-date-format ='dd/mm/yyyy'>
                 </div>
 
                 <!-- code Field -->
@@ -133,7 +133,7 @@
                 <!-- send_price Field -->
                 <div class="form-group col-sm-6">
                     <label for="send_price">{!! __('messages.send_price') . '*:' !!}</label>
-                    <input class="form-control" name="send_price" type="text" id="send_price">
+                    <input class="form-control" name="send_price" type="number" id="send_price">
                 </div>
                 <!-- machine type Field -->
                 <div class="form-group col-sm-6">

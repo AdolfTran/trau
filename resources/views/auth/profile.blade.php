@@ -9,13 +9,37 @@
     <div class="content">
         @include('flash::message')
         <div class="box box-primary">
+            <div class="box-body" style="overflow: hidden">
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        {!! Form::label('name', __('messages.name') . ':') !!}
+                        <p>{!! $user->name !!}</p>
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('email', __('messages.email') . ':') !!}
+                        <p>{!! $user->email !!}</p>
+                    </div>
+                </div>
 
-            <div class="box-body">
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        {!! Form::label('address', __('messages.address') . ':') !!}
+                        <p>{!! $user->address ? $user->address  : "&nbsp;" !!}</p>
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('phone_number', __('messages.phone_number') . ':') !!}
+                        <p>{!! $user->phonenumber ? $user->phonenumber : "&nbsp;" !!}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box box-primary">
+            <div class="box-body" style="overflow: hidden">
                 <div class="row">
                     <form class="form-horizontal" action="{!! url('') !!}/change_pass" method="POST">
                         <fieldset>
                             <!-- Form Name -->
-                            <legend>Change password</legend>
+                            <legend style="margin-left: 15px">Change password</legend>
                             <!-- Password input-->
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="piCurrPass">Current password</label>

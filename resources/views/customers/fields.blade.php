@@ -27,7 +27,7 @@
 <!-- Contract signing date Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('date', __('messages.contract_siging_date') . ":") !!}
-    {!! Form::text('date', null, ['class' => 'form-control']) !!}
+    {!! Form::text('date', null, ['class' => 'form-control', 'data-provide' => 'datepicker', 'data-date-format'=>'dd/mm/yyyy']) !!}
 </div>
 
 <!-- Submit Field -->

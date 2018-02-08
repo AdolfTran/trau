@@ -3,6 +3,7 @@
         <tr>
             <th>{{ __('messages.id') }}</th>
             <th>{{ __('messages.name') }}</th>
+            <th>{{ __('messages.email') }}</th>
             <th>{{ __('messages.phone_number') }}</th>
             <th>{{ __('messages.address') }}</th>
             <th>{{ __('messages.date') }}</th>
@@ -17,6 +18,7 @@
         <tr>
             <td>{!! $employee->id !!}</td>
             <td>{!! $employee->name !!}</td>
+            <td>{!! $employee->email !!}</td>
             <td>{!! $employee->phone_number !!}</td>
             <td>{!! $employee->address !!}</td>
             <td>{!! $employee->date !!}</td>

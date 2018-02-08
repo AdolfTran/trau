@@ -25,7 +25,7 @@
 <!-- Date Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('date', __('messages.date') . ':') !!}
-    {!! Form::text('date', null, ['class' => 'form-control']) !!}
+    {!! Form::text('date', null, ['class' => 'form-control', 'data-provide' => 'datepicker', 'data-date-format'=>'dd/mm/yyyy']) !!}
 </div>
 
 <!-- Salary Field -->

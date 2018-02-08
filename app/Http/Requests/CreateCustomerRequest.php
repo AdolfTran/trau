@@ -25,6 +25,10 @@ class CreateCustomerRequest extends FormRequest
      */
     public function rules()
     {
-        return Customer::$rules;
+        $rules = [
+            'name' => 'required',
+            'email' => 'email|required|unique:users'
+        ];
+        return $rules;
     }
 }

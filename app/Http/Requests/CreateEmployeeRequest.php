@@ -25,6 +25,10 @@ class CreateEmployeeRequest extends FormRequest
      */
     public function rules()
     {
-        return Employee::$rules;
+        $rules = [
+            'name' => 'required',
+            'email' => 'email|required|unique:users'
+        ];
+        return $rules;
     }
 }

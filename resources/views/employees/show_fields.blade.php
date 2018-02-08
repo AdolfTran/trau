@@ -4,6 +4,12 @@
     <p>{!! $employee['name'] !!}</p>
 </div>
 
+<!-- Email Field -->
+<div class="form-group">
+    {!! Form::label('email', __('messages.email') . ':') !!}
+    <p>{!! $employee['email'] !!}</p>
+</div>
+
 <!-- Phone Number Field -->
 <div class="form-group">
     {!! Form::label('phonenumber', __('messages.phone_number') . ':') !!}
