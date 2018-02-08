@@ -23,3 +23,5 @@ Route::get('/home', 'HomeController@index');
 Route::get('/', 'HomeController@index');
 Route::resource('machines', 'MachineController');
 Route::any('data_json', 'MachineController@getDataForDataTable');
+
+Route::resource('machineTypes', 'MachineTypeController');

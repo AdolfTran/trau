@@ -12,7 +12,7 @@
 
             <div class="box-body">
                 <div class="row">
-                    <form class="form-horizontal" action="/change_pass" method="POST">
+                    <form class="form-horizontal" action="{!! url('') !!}/change_pass" method="POST">
                         <fieldset>
                             <!-- Form Name -->
                             <legend>Change password</legend>

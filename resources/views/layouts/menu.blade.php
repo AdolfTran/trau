@@ -13,6 +13,9 @@
 </li>
 
 <?php if(Auth::user() &&  (Auth::user()->role == 1 || Auth::user()->role == 2)){ ?>
+<li class="{{ Request::is('machineTypes*') ? 'active' : '' }}">
+    <a href="{!! route('machineTypes.index') !!}"><i class="fa fa-edit"></i><span>{!! __('messages.a_machines_type') !!}</span></a>
+</li>
 <li class="{{ Request::is('customers*') ? 'active' : '' }}">
     <a href="{!! route('customers.index') !!}"><i class="fa fa-edit"></i><span>{!! __('messages.a_customers') !!}</span></a>
 </li>

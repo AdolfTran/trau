@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\CustomerDevice;
 use App\Http\Requests\CreateCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
+use App\Models\MachineType;
 use App\Repositories\CustomerRepository;
 use App\Http\Controllers\AppBaseController;
 use App\User;
@@ -173,6 +174,14 @@ class CustomerController extends AppBaseController
     {
         $customer = User::findOrFail($id);
 
+        $_machineTypes = MachineType::all();
+        $machineTypes = array();
+
+        foreach($_machineTypes as $_machineType)
+        {
+            $machineTypes[$_machineType['id']] = $_machineType['name'] . ' - ' . $_machineType['price'];
+        }
+
         if (empty($customer)) {
             Flash::error('Customer not found');
 
@@ -180,6 +189,6 @@ class CustomerController extends AppBaseController
         }
         $machines = DB::table('tb_customer_devices')->where('user_id', $id)->get();
 
-        return view('machines.show')->with('customer', $customer)->with('machines', $machines);
+        return view('machines.show')->with('customer', $customer)->with('machines', $machines)->with('machineTypes', $machineTypes);
     }
 }

@@ -48,4 +48,6 @@ return [
     'save' => 'Lưu',
     'back' => 'Trở về',
     'list_machines' => 'Danh sách máy',
+    'a_machines_type' => 'Danh sách loại máy',
+    'machines_type' => 'Loại máy',
 ];
