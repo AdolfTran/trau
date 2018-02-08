@@ -191,7 +191,7 @@ class MachineController extends AppBaseController
     {
         $data = $request->all();
         if(!empty($data)){
-            if($data['id'] == "") {
+            if($data['id'] == "" || $data['id'] == null) {
                 DB::table('tb_customer_devices')->insert($data);
             } else {
                 DB::table('tb_customer_devices')->where('id', $data['id'])->update($data);

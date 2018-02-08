@@ -43,4 +43,9 @@ return [
     'send_date' => 'Ngày gửi',
     'send_price' => 'Giá gửi',
     'list' => 'Danh sách',
+    'add' => 'Thêm',
+    'close' => 'Hủy',
+    'save' => 'Lưu',
+    'back' => 'Trở về',
+    'list_machines' => 'Danh sách máy',
 ];

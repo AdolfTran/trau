@@ -1,3 +1,4 @@
+<div class="box box-primary" style="height: 150px; padding-top: 20px">
 <div class="col-xs-4">
     <!-- Name Field -->
     <div class="form-group">
@@ -30,11 +31,23 @@
         <p>{!! $customer['date'] !!}</p>
     </div>
 </div>
+</div>
+
+<div class="col-xs-12">
+    <div class="col-xs-2">
+        <h3 style="margin-top: 0px">
+            {{ __('messages.list_machines') }}
+        </h3>
+    </div>
+    <div class="col-xs-2" style="margin-left: -40px">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAddNew">
+            {!! __('messages.add_machines') !!}
+        </button>
+    </div>
+</div>
+<div class="box box-primary" style="overflow: scroll; max-height: 550px;margin-bottom: 0px;padding-bottom: 10px;">
 <div class="col-xs-12">
 <hr>
-<h5>
-    {{ __('messages.list') }}
-</h5>
     <table class="table table-responsive" id="customer-devices-table">
         <thead>
         <tr>
@@ -68,11 +81,6 @@
         @endforeach
         </tbody>
     </table>
-</div>
-<div class="col-xs-12">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAddNew">
-        Add new
-    </button>
 </div>
 <div class="modal fade" id="modalAddNew" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -129,11 +137,12 @@
                 <input class="form-control" name="id" type="hidden" id="id">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary close_machines" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="add_machines">Add</button>
+                <button type="button" class="btn btn-secondary close_machines" data-dismiss="modal">{!! __('messages.close') !!}</button>
+                <button type="button" class="btn btn-primary" id="add_machines">{!! __('messages.add') !!}</button>
             </div>
         </div>
     </div>
+</div>
 </div>
 @section('scripts')
     <script type="application/javascript">
