@@ -9,11 +9,11 @@
    <div class="content">
        @include('adminlte-templates::common.errors')
        <div class="box box-primary">
-           <div class="box-body">
+           <div class="box-body" style="overflow: hidden">
                <div class="row">
                    {!! Form::model($employee, ['route' => ['employees.update', $employee->id], 'method' => 'patch']) !!}
 
-                        @include('employees.fields')
+                        @include('employees.edit_fields')
 
                    {!! Form::close() !!}
                </div>

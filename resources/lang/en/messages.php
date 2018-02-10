@@ -50,4 +50,5 @@ return [
     'list_machines' => 'Danh sách máy',
     'a_machines_type' => 'Danh sách loại máy',
     'machines_type' => 'Loại máy',
+    'reset_password' => 'Thay đổi mật khẩu',
 ];

@@ -12,6 +12,7 @@ Route::group(['middleware' => 'admin'], function () {
 Route::group(['middleware' => 'editor'], function () {
     Route::any('deleted/{id}', 'MachineController@deleted');
     Route::get('/customers/add/{id}', 'CustomerController@add')->name('addCustomers');
+    Route::post('/customers/reset', 'CustomerController@reset')->name('resetPassword');
     Route::resource('customers', 'CustomerController');
 });
 

@@ -191,4 +191,18 @@ class CustomerController extends AppBaseController
 
         return view('machines.show')->with('customer', $customer)->with('machines', $machines)->with('machineTypes', $machineTypes);
     }
+
+    public function reset(Request $request)
+    {
+        $data = $request->all();
+        if(!empty($data['id'])){
+            $_password = rand(111111, 999999);
+            $password = bcrypt($_password);
+            $input['password'] = $password;
+            User::where('id', $data['id'])->update($input);
+            return json_encode($_password);
+        } else {
+            return json_encode(0);
+        }
+    }
 }
