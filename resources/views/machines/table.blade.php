@@ -6,7 +6,7 @@
             <th>{{ __('messages.type') }}</th>
             <th>{{ __('messages.pool1') }}</th>
             <th>{{ __('messages.hash_rate_5s') }}</th>
-            <th>{{ __('messages.temp') }}</th>
+            <th>{{ __('messages.card_number') }}</th>
             <th>{{ __('messages.temp') }}</th>
             <th>{{ __('messages.elapsed') }}</th>
             <th>{{ __('messages.update_time') }}</th>
