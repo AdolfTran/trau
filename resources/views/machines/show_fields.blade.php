@@ -58,7 +58,6 @@
             <th>{!! __('messages.ip') !!}</th>
             <th>{!! __('messages.sale_place') !!}</th>
             <th>{!! __('messages.code') !!}</th>
-            <th>{!! __('messages.price') !!}</th>
             <th>{!! __('messages.machines_type') !!}</th>
             <th colspan="3">Action</th>
         </tr>
@@ -72,7 +71,6 @@
                 <td>{!! $machine->ip !!}</td>
                 <td>{!! $machine->sale_place !!}</td>
                 <td>{!! $machine->code !!}</td>
-                <td>{!! $machine->price !!}</td>
                 <td data-id="{!! $machine->machine_type_id !!}">{!! $machine->machine_type_id && $machineTypes[$machine->machine_type_id] ? $machineTypes[$machine->machine_type_id] : '' !!}</td>
                 <td data-id="{!! $machine->id !!}">
                     <div class='btn-group'>
@@ -131,11 +129,11 @@
                     <input class="form-control" name="code" type="text" id="code">
                 </div>
 
-                <!-- send_price Field -->
-                <div class="form-group col-sm-6">
-                    <label for="send_price">{!! __('messages.send_price') . '*:' !!}</label>
-                    <input class="form-control" name="send_price" type="number" id="send_price">
-                </div>
+                {{--<!-- send_price Field -->--}}
+                {{--<div class="form-group col-sm-6">--}}
+                    {{--<label for="send_price">{!! __('messages.send_price') . '*:' !!}</label>--}}
+                    {{--<input class="form-control" name="send_price" type="text" id="send_price">--}}
+                {{--</div>--}}
                 <!-- machine type Field -->
                 <div class="form-group col-sm-6">
                     <label for="machine_type_id">{!! __('messages.machines_type') . '*:' !!}</label>
@@ -203,10 +201,8 @@
                 var input = $('#modalAddNew').find('input');
                 if($('#name_machines').val() == ""
                     || $('#send_date').val() == ""
-                    || $('#ip').val() == ""
                     || $('#status').val() == ""
-                    || $('#code').val() == ""
-                    || $('#send_price').val() == ""){
+                    || $('#code').val() == ""){
                     return false;
                 }
                 var id = $('#id').val();
@@ -247,8 +243,7 @@
                         $(td[3]).html($('#ip').val());
                         $(td[4]).html($('#sale_place').val());
                         $(td[5]).html($('#code').val());
-                        $(td[6]).html($('#send_price').val());
-                        $(td[7]).html($('#machine_type_id').val());
+                        $(td[6]).html($('#machine_type_id').val());
                         data['name_machines'] = $('#name_machines').val();
                         data['send_date'] = $('#send_date').val();
                         data['status'] = $('#status').val();
@@ -273,10 +268,9 @@
                 $('#ip').val($(input[3]).html());
                 $('#sale_place').val($(input[4]).html());
                 $('#code').val($(input[5]).html());
-                $('#send_price').val($(input[6]).html());
-                $('#machine_type_id').val($(input[7]).html());
-                $('#machine_type_id').attr("data-id",$(input[7]).data('id'));
-                $('#id').val($(input[8]).data('id'));
+                $('#machine_type_id').val($(input[6]).html());
+                $('#machine_type_id').attr("data-id",$(input[6]).data('id'));
+                $('#id').val($(input[7]).data('id'));
                 $('#modalAddNew').modal('show');
             });
             $('.close_machines').click(function (){
@@ -301,7 +295,6 @@
                             'name': value.name_machines,
                             'sale_place': value.sale_place,
                             'date': value.send_date,
-                            'price': value.send_price,
                             'status': value.status,
                             'id': value.id,
                             'machine_type_id': value.machine_type_id,

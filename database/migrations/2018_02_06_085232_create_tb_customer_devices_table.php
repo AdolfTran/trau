@@ -17,7 +17,7 @@ class CreateTbCustomerDevicesTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->text('name');
-            $table->datetime('date');
+            $table->text('date');
             $table->text('status');
             $table->text('ip')->nullable();
             $table->text('sale_place')->nullable();

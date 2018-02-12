@@ -19,7 +19,7 @@
             <td>{!! $employee->id !!}</td>
             <td>{!! $employee->name !!}</td>
             <td>{!! $employee->email !!}</td>
-            <td>{!! $employee->phone_number !!}</td>
+            <td>{!! $employee->phonenumber !!}</td>
             <td>{!! $employee->address !!}</td>
             <td>{!! $employee->date !!}</td>
             <td>{!! $employee->salary !!}</td>
