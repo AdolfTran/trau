@@ -1,9 +1,3 @@
-{{--<?php if(Auth::user() &&  Auth::user()->role == 1){ ?>--}}
-{{--<li class="{{ Request::is('homes*') ? 'active' : '' }}">--}}
-    {{--<a href="{!! route('homes.index') !!}"><i class="fa fa-edit"></i><span>{!! __('messages.home') !!}</span></a>--}}
-{{--</li>--}}
-{{--<?php } ?>--}}
-
 <li class="{{ Request::is('machines*') ? 'active' : '' }}">
     <a href="{!! route('machines.index') !!}"><i class="fa fa-edit"></i><span>{!! __('messages.a_machines') !!}</span></a>
 </li>

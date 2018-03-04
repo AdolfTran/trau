@@ -52,4 +52,5 @@ return [
     'machines_type' => 'Loại máy',
     'reset_password' => 'Thay đổi mật khẩu',
     'card_number' => 'Số card',
+    'machine_number' => 'Vị trí máy',
 ];

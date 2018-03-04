@@ -11,9 +11,10 @@
         </tr>
     </thead>
     <tbody>
+    <?php $i = 1; ?>
     @foreach($customers as $customer)
         <tr>
-            <td>{!! $customer->id !!}</td>
+            <td>{!! $i++ !!}</td>
             <td><a href="{!! route('addCustomers', [$customer->id]) !!}">{!! $customer->name !!}</a></td>
             <td>{!! $customer->address !!}</td>
             <td>{!! $customer->phonenumber !!}</td>

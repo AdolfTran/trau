@@ -52,6 +52,7 @@
     <table class="table table-responsive" id="customer-devices-table">
         <thead>
         <tr>
+            <th>#</th>
             <th>{!! __('messages.name') !!}</th>
             <th>{!! __('messages.date') !!}</th>
             <th>{!! __('messages.status') !!}</th>
@@ -59,12 +60,15 @@
             <th>{!! __('messages.sale_place') !!}</th>
             <th>{!! __('messages.code') !!}</th>
             <th>{!! __('messages.machines_type') !!}</th>
+            <th>{!! __('messages.machine_number') !!}</th>
             <th colspan="3">Action</th>
         </tr>
         </thead>
         <tbody>
+        <?php $i = 1; ?>
         @foreach($machines as $machine)
             <tr id="m_{!! $machine->id !!}">
+                <td>{!! $i++ !!}</td>
                 <td>{!! $machine->name !!}</td>
                 <td>{!! $machine->date !!}</td>
                 <td>{!! $machine->status !!}</td>
@@ -72,6 +76,7 @@
                 <td>{!! $machine->sale_place !!}</td>
                 <td>{!! $machine->code !!}</td>
                 <td data-id="{!! $machine->machine_type_id !!}">{!! $machine->machine_type_id && $machineTypes[$machine->machine_type_id] ? $machineTypes[$machine->machine_type_id] : '' !!}</td>
+                <td>{!! $machine->machine_number !!}</td>
                 <td data-id="{!! $machine->id !!}">
                     <div class='btn-group'>
                         <button type="button" class="btn btn-default btn-x edit_machines" data-toggle="modal" style="padding: 0px 4px;"><i class="glyphicon glyphicon-edit"></i></button>
@@ -107,7 +112,7 @@
 
                 <!-- status Field -->
                 <div class="form-group col-sm-6">
-                    <label for="status">{!! __('messages.status') . '*:' !!}</label>
+                    <label for="status">{!! __('messages.status') . ':' !!}</label>
                     <input class="form-control" name="status" type="text" id="status">
                 </div>
 
@@ -125,15 +130,9 @@
 
                 <!-- code Field -->
                 <div class="form-group col-sm-6">
-                    <label for="code">{!! __('messages.code') . '*:' !!}</label>
+                    <label for="code">{!! __('messages.code') . ':' !!}</label>
                     <input class="form-control" name="code" type="text" id="code">
                 </div>
-
-                {{--<!-- send_price Field -->--}}
-                {{--<div class="form-group col-sm-6">--}}
-                    {{--<label for="send_price">{!! __('messages.send_price') . '*:' !!}</label>--}}
-                    {{--<input class="form-control" name="send_price" type="text" id="send_price">--}}
-                {{--</div>--}}
                 <!-- machine type Field -->
                 <div class="form-group col-sm-6">
                     <label for="machine_type_id">{!! __('messages.machines_type') . '*:' !!}</label>
@@ -143,6 +142,11 @@
                             <option value="{!! $value !!}" data-id="{!! $key !!}">
                         <?php } ?>
                     </datalist>
+                </div>
+                <!-- code Field -->
+                <div class="form-group col-sm-6">
+                    <label for="machine_number">{!! __('messages.machine_number') . ':' !!}</label>
+                    <input class="form-control" name="machine_number" type="text" id="machine_number">
                 </div>
                 <!-- hidden Field -->
                 <input class="form-control" name="id" type="hidden" id="id">
@@ -197,18 +201,18 @@
         $(document).ready(function() {
             var data_add = [];
             var data_delete = [];
+            var max_id = <?php echo json_encode($i-1); ?>;
             $('#add_machines').click(function(){
                 var input = $('#modalAddNew').find('input');
                 if($('#name_machines').val() == ""
-                    || $('#send_date').val() == ""
-                    || $('#status').val() == ""
-                    || $('#code').val() == ""){
+                    || $('#send_date').val() == ""){
                     return false;
                 }
                 var id = $('#id').val();
                 if(id == "") {
                     var ip = $('#ip').val();
-                    var _html = "<tr id='ip_" + ip + "'>";
+                    max_id = max_id + 1;
+                    var _html = "<tr id='ip_" + ip + "'><td>"+max_id+"</td>";
                     var data = [];
                     $(input).each(function (_v, index) {
                         var key = $(index).attr('name');
@@ -237,13 +241,14 @@
                     if(_id.length = 1){
                         var data = [];
                         var td = $('#m_' + id).find('td');
-                        $(td[0]).html($('#name_machines').val());
-                        $(td[1]).html($('#send_date').val());
-                        $(td[2]).html($('#status').val());
-                        $(td[3]).html($('#ip').val());
-                        $(td[4]).html($('#sale_place').val());
-                        $(td[5]).html($('#code').val());
-                        $(td[6]).html($('#machine_type_id').val());
+                        $(td[1]).html($('#name_machines').val());
+                        $(td[2]).html($('#send_date').val());
+                        $(td[3]).html($('#status').val());
+                        $(td[4]).html($('#ip').val());
+                        $(td[5]).html($('#sale_place').val());
+                        $(td[6]).html($('#code').val());
+                        $(td[7]).html($('#machine_type_id').val());
+                        $(td[8]).html($('#machine_number').val());
                         data['name_machines'] = $('#name_machines').val();
                         data['send_date'] = $('#send_date').val();
                         data['status'] = $('#status').val();
@@ -252,6 +257,7 @@
                         data['code'] = $('#code').val();
                         data['machine_type_id'] = $('#machine_type_id').data('id');
                         data['send_price'] = $('#send_price').val();
+                        data['machine_number'] = $('#machine_number').val();
                         data['id'] = id;
                         data_add.push(data);
                     }
@@ -269,6 +275,7 @@
                 $('#sale_place').val($(input[4]).html());
                 $('#code').val($(input[5]).html());
                 $('#machine_type_id').val($(input[6]).html());
+                $('#machine_number').val($(input[7]).html());
                 $('#machine_type_id').attr("data-id",$(input[6]).data('id'));
                 $('#id').val($(input[7]).data('id'));
                 $('#modalAddNew').modal('show');
@@ -279,6 +286,7 @@
             $('.delete_machines').click(function () {
                 var id = $($(this).parent().parent()).data('id');
                 data_delete[id] = id;
+                max_id = max_id - 1;
                 $($(this).parent().parent().parent()['0']).remove();
             });
 
@@ -298,6 +306,7 @@
                             'status': value.status,
                             'id': value.id,
                             'machine_type_id': value.machine_type_id,
+                            'machine_number': value.machine_number,
                             'user_id': "{!! $customer['id'] !!}"
                         },
                         method: 'POST',

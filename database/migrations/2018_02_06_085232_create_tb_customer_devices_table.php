@@ -18,10 +18,10 @@ class CreateTbCustomerDevicesTable extends Migration
             $table->integer('user_id');
             $table->text('name');
             $table->text('date');
-            $table->text('status');
+            $table->text('status')->nullable();
             $table->text('ip')->nullable();
             $table->text('sale_place')->nullable();
-            $table->text('code');
+            $table->text('code')->nullable();
             $table->integer('price');
             $table->timestamps();
             $table->softDeletes();
