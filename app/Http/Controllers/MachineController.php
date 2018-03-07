@@ -203,12 +203,9 @@ class MachineController extends AppBaseController
     public function removeMachines(Request $request)
     {
         $data = $request->all();
-        if(!empty($data)){
-            foreach ($data['data'] as $id){
-                if($id){
-                    DB::table('tb_customer_devices')->where('id', $id)->delete();
-                }
-            }
+        if(!empty($data) && !empty($data['data'])){
+            $id = $data['data'];
+           DB::table('tb_customer_devices')->where('id', $id)->delete();
         }
         return json_encode(1);
     }

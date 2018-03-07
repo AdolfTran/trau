@@ -33,8 +33,6 @@ class CustomerController extends AppBaseController
      */
     public function index(Request $request)
     {
-//        $this->customerRepository->pushCriteria(new RequestCriteria($request));
-//        $customers = $this->customerRepository->all();
         $customers = User::where('role' , 3)->get();
 
         return view('customers.index')
@@ -65,6 +63,7 @@ class CustomerController extends AppBaseController
         $password = bcrypt($_password);
         $input['password'] = $password;
         $input['role'] = 3;
+        $input['code'] = rand(0001, 9999);
 
         User::create($input);
 

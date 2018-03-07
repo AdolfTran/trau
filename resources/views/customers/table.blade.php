@@ -6,6 +6,7 @@
             <th>{{ __('messages.address') }}</th>
             <th>{{ __('messages.phone_number') }}</th>
             <th>{{ __('messages.email') }}</th>
+            <th>{{ __('messages.customer_code') }}</th>
             <th>{{ __('messages.contract_siging_date') }}</th>
             <th colspan="3">{{ __('messages.action') }}</th>
         </tr>
@@ -19,6 +20,7 @@
             <td>{!! $customer->address !!}</td>
             <td>{!! $customer->phonenumber !!}</td>
             <td>{!! $customer->email !!}</td>
+            <td>{!! $customer->code !!}</td>
             <td>{!! $customer->date !!}</td>
             <td>
                 {!! Form::open(['route' => ['customers.destroy', $customer->id], 'method' => 'delete']) !!}

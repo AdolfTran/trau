@@ -33,4 +33,8 @@
     {!! Form::label('date', __('messages.contract_siging_date') . ':') !!}
     <p>{!! $customer['date'] !!}</p>
 </div>
+<div class="form-group">
+    {!! Form::label('code', __('messages.customer_code') . ':') !!}
+    <p>{!! $customer['code'] !!}</p>
+</div>
 

@@ -1,5 +1,5 @@
 <div class="box box-primary" style="height: 150px; padding-top: 20px">
-<div class="col-xs-4">
+<div class="col-xs-3">
     <!-- Name Field -->
     <div class="form-group">
         {!! Form::label('name', __('messages.name') . ':') !!}
@@ -12,7 +12,7 @@
         <p>{!! $customer['address'] !!}</p>
     </div>
 </div>
-<div class="col-xs-4">
+<div class="col-xs-3">
     <!-- Phonenumber Field -->
     <div class="form-group">
         {!! Form::label('phonenumber', __('messages.phone_number') . ':') !!}
@@ -24,12 +24,18 @@
         <p>{!! $customer['email'] !!}</p>
     </div>
 </div>
-<div class="col-xs-4">
+<div class="col-xs-3">
     <!-- Date Field -->
     <div class="form-group">
         {!! Form::label('date', __('messages.contract_siging_date') . ':') !!}
         <p>{!! $customer['date'] !!}</p>
     </div>
+    <div class="form-group">
+        {!! Form::label('code', __('messages.customer_code') . ':') !!}
+        <p>{!! $customer['code'] !!}</p>
+    </div>
+</div>
+<div class="col-xs-3">
     <button type="button" id="resetPassword" class="btn btn-warning">{!! __('messages.reset_password') !!}</button>
 </div>
 </div>
@@ -199,8 +205,6 @@
         }
 
         $(document).ready(function() {
-            var data_add = [];
-            var data_delete = [];
             var max_id = <?php echo json_encode($i-1); ?>;
             $('#add_machines').click(function(){
                 var input = $('#modalAddNew').find('input');
@@ -208,12 +212,12 @@
                     || $('#send_date').val() == ""){
                     return false;
                 }
+                var data = [];
                 var id = $('#id').val();
                 if(id == "") {
                     var ip = $('#ip').val();
                     max_id = max_id + 1;
                     var _html = "<tr id='ip_" + ip + "'><td>"+max_id+"</td>";
-                    var data = [];
                     $(input).each(function (_v, index) {
                         var key = $(index).attr('name');
                         var value = $(index).val();
@@ -225,7 +229,6 @@
                         _html += "<td>" + value + "</td>";
                     });
                     data['id'] = "";
-                    data_add.push(data);
                     _html += "<td id='ip_" + ip + "'>\n" +
                         "<div class='btn-group'>\n" +
                         "<button type=\"button\" class=\"btn btn-default btn-x edit_machines\" data-toggle=\"modal\" style=\"padding: 0px 4px;\"><i class=\"glyphicon glyphicon-edit\"></i></button>\n" +
@@ -239,7 +242,6 @@
                 } else {
                     var _id = id.split('_');
                     if(_id.length = 1){
-                        var data = [];
                         var td = $('#m_' + id).find('td');
                         $(td[1]).html($('#name_machines').val());
                         $(td[2]).html($('#send_date').val());
@@ -259,25 +261,44 @@
                         data['send_price'] = $('#send_price').val();
                         data['machine_number'] = $('#machine_number').val();
                         data['id'] = id;
-                        data_add.push(data);
                     }
                     $('#modalAddNew').modal('hide');
                     $(':input').val('');
                 }
+
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{!! route('addMachines') !!}",
+                    data: {
+                        'code': data.code,
+                        'ip': data.ip,
+                        'name': data.name_machines,
+                        'sale_place': data.sale_place,
+                        'date': data.send_date,
+                        'status': data.status,
+                        'id': data.id,
+                        'machine_type_id': data.machine_type_id,
+                        'machine_number': data.machine_number,
+                        'user_id': "{!! $customer['id'] !!}"
+                    },
+                    method: 'POST',
+                });
             });
 
             $('.edit_machines').click(function () {
-                var input = $($(this).parent().parent().parent()['0']).find('td')
-                $('#name_machines').val($(input[0]).html());
-                $('#send_date').val($(input[1]).html());
-                $('#status').val($(input[2]).html());
-                $('#ip').val($(input[3]).html());
-                $('#sale_place').val($(input[4]).html());
-                $('#code').val($(input[5]).html());
-                $('#machine_type_id').val($(input[6]).html());
-                $('#machine_number').val($(input[7]).html());
-                $('#machine_type_id').attr("data-id",$(input[6]).data('id'));
-                $('#id').val($(input[7]).data('id'));
+                var input = $($(this).parent().parent().parent()['0']).find('td');
+                $('#name_machines').val($(input[1]).html());
+                $('#send_date').val($(input[2]).html());
+                $('#status').val($(input[3]).html());
+                $('#ip').val($(input[4]).html());
+                $('#sale_place').val($(input[5]).html());
+                $('#code').val($(input[6]).html());
+                $('#machine_type_id').val($(input[7]).html());
+                $('#machine_number').val($(input[8]).html());
+                $('#machine_type_id').attr("data-id",$(input[9]).data('id'));
+                $('#id').val($(input[9]).data('id'));
                 $('#modalAddNew').modal('show');
             });
             $('.close_machines').click(function (){
@@ -285,46 +306,18 @@
             });
             $('.delete_machines').click(function () {
                 var id = $($(this).parent().parent()).data('id');
-                data_delete[id] = id;
                 max_id = max_id - 1;
                 $($(this).parent().parent().parent()['0']).remove();
-            });
-
-            $('#save_machines').click(function () {
-                $.each(data_add, function(key, value){
-                    $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        url: "{!! route('addMachines') !!}",
-                        data: {
-                            'code': value.code,
-                            'ip': value.ip,
-                            'name': value.name_machines,
-                            'sale_place': value.sale_place,
-                            'date': value.send_date,
-                            'status': value.status,
-                            'id': value.id,
-                            'machine_type_id': value.machine_type_id,
-                            'machine_number': value.machine_number,
-                            'user_id': "{!! $customer['id'] !!}"
-                        },
-                        method: 'POST',
-                    });
-                });
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     url: "{!! route('removeMachines') !!}",
                     data: {
-                        'data':data_delete
+                        'data':id
                     },
                     method: 'POST',
                 });
-                setTimeout(function () {
-                   location.reload();
-                }, 1000);
             });
         });
         $("#resetPassword").click(function(){
