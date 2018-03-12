@@ -1,9 +1,9 @@
 <li class="{{ Request::is('dashboard*') ? 'active' : '' }}">
-    <a href="#"><i class="fa fa-edit"></i><span>Dashborad</span></a>
+    <a href="{!! url('') !!}/"><i class="fa fa-edit"></i><span>{!! __('messages.dashboard') !!}</span></a>
 </li>
 
 <li class="{{ Request::is('machines*') ? 'active' : '' }}">
-    <a href="{!! route('machines.index') !!}"><i class="fa fa-edit"></i><span>{!! __('messages.a_machines') !!}</span></a>
+    <a href="{!! route('machines.index') !!}"><i class="fa fa-edit"></i><span>{!! __('messages.asic_live') !!}</span></a>
 </li>
 
 <?php if(Auth::user() &&  (Auth::user()->role == 1 || Auth::user()->role == 2)){ ?>
