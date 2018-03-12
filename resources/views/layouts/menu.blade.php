@@ -1,4 +1,4 @@
-<li class="{{ Request::is('dashboard*') ? 'active' : '' }}">
+<li class="{{ Request::is('/') ? 'active' : '' }}">
     <a href="{!! url('') !!}/"><i class="fa fa-edit"></i><span>{!! __('messages.dashboard') !!}</span></a>
 </li>
 
@@ -12,6 +12,9 @@
 </li>
 <li class="{{ Request::is('customers*') ? 'active' : '' }}">
     <a href="{!! route('customers.index') !!}"><i class="fa fa-edit"></i><span>{!! __('messages.a_customers') !!}</span></a>
+</li>
+<li class="{{ Request::is('cost*') ? 'active' : '' }}">
+    <a href="{!! route('cost.index') !!}"><i class="fa fa-edit"></i><span>{!! __('messages.a_costs') !!}</span></a>
 </li>
 <?php } ?>
 

@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomerDevice;
 use App\Http\Requests\CreateCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\MachineType;
 use App\Repositories\CustomerRepository;
-use App\Http\Controllers\AppBaseController;
 use App\User;
 use Illuminate\Http\Request;
 use Flash;
 use Illuminate\Support\Facades\DB;
-use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 class CustomerController extends AppBaseController

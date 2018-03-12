@@ -14,6 +14,7 @@ Route::group(['middleware' => 'editor'], function () {
     Route::get('/customers/add/{id}', 'CustomerController@add')->name('addCustomers');
     Route::post('/customers/reset', 'CustomerController@reset')->name('resetPassword');
     Route::resource('customers', 'CustomerController');
+    Route::resource('cost', 'CostController');
 });
 
 Route::group(['middleware' => 'auth'], function () {

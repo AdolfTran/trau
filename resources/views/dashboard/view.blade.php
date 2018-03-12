@@ -8,8 +8,8 @@
                 <!-- small box -->
                 <div class="small-box bg-aqua">
                     <div class="inner">
-                        <h4>{!! isset($countCustomer) ? $countCustomer : 0 !!}</h4>
-                        <p>{{ __('messages.number_of_customer') }}</p>
+                        <h4>{!! isset($revenueMonth) ? number_format("$revenueMonth",0,",",".") : 0 !!} VND</h4>
+                        <p>{{ __('messages.expected_amount_of_month_x') . date('m', strtotime(now())) }}</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-shopping-cart"></i>
@@ -24,43 +24,11 @@
                 <!-- small box -->
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h4>{!! number_format($totalRevenue - $totalMoneys , 0, ",", ".") !!} VND</h4>
-                        <p>{{ __('messages.profit_month_x') . date('m', strtotime(now())) }}</p>
+                        <h4>0</h4>
+                        <p>{{ __('messages.total_money_you_have_to_pay_x') }}</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">
-                        More info <i class="fa fa-arrow-circle-right"></i>
-                    </a>
-                </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-yellow">
-                    <div class="inner">
-                        <h4>{!! isset($totalRevenue) ? number_format($totalRevenue,0,",",".") : 0 !!} VND</h4>
-                        <p>{{ __('messages.revenue_month_x') . date('m', strtotime(now())) }}</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-person-add"></i>
-                    </div>
-                    <a href="{!! url('') !!}/customers" class="small-box-footer">
-                        More info <i class="fa fa-arrow-circle-right"></i>
-                    </a>
-                </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-red">
-                    <div class="inner">
-                        <h4>{!! isset($totalMoneys) ? number_format($totalMoneys,0,",",".") : 0 !!} VND</h4>
-                        <p>{{ __('messages.cost_month_x') . date('m', strtotime(now())) }}</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-pie-graph"></i>
                     </div>
                     <a href="#" class="small-box-footer">
                         More info <i class="fa fa-arrow-circle-right"></i>
@@ -86,8 +54,9 @@
                                     <th>{{ __('messages.type') }}</th>
                                     <th style="width: 80px">{{ __('messages.number') }}</th>
                                 </tr>
+
                                 <?php $i = 1; ?>
-                                @foreach($machines as $_name => $_number)
+                                @foreach($listMachines as $_name => $_number)
                                     <?php
                                     if($i % 4 == 1){
                                         $_class = 'red';
