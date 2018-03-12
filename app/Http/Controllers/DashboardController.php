@@ -55,7 +55,7 @@ class DashboardController extends Controller
                 $machines[$machine->name] = 1;
             }
         }
-        $_totalMoneys = DB::table('cost')->get();
+        $_totalMoneys = DB::table('cost')->where('deleted_at', NULL)->get();
         $month = date('m/Y', strtotime(now()));
         $totalMoneys = 0;
         foreach ($_totalMoneys as $_totalMoney)
