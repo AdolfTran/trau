@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Flash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use Response;
 
 class CustomerController extends AppBaseController
@@ -30,10 +31,24 @@ class CustomerController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $customers = User::where('role' , 3)->get();
+        $search = $request->only('search');
+        if(!empty($search)){
+            $search = !empty($search['search']) ? $search['search'] : '';
+            $customers = User::where('role', 3)
+                ->where(function($query){
+                    $query->where('name', 'like', '%' . Input::get('search') . '%')
+                        ->orWhere('email', 'like', '%' . Input::get('search') . '%')
+                        ->orWhere('address', 'like', '%' . Input::get('search') . '%')
+                        ->orWhere('phonenumber', 'like', '%' . Input::get('search') . '%')
+                        ->orWhere('code', 'like', '%' . Input::get('search') . '%');
+                })->get();
+        } else {
+            $customers = User::where('role', 3)->get();
+        }
 
         return view('customers.index')
-            ->with('customers', $customers);
+            ->with('customers', $customers)
+            ->with('search', $search);
     }
 
     /**

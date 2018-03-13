@@ -70,4 +70,9 @@ return [
     'description' => 'Ghi chú',
     'people' => 'Người chi',
     'date_cost' => 'Ngày chi',
+    'a_receives' => 'Quản lý thu tiền',
+    'receives' => 'Thu tiền',
+    'receiver' => 'Người thu',
+    'months' => 'Cho tháng',
+    'sender' => 'Người gửi',
 ];

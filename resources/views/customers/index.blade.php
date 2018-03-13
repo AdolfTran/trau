@@ -15,6 +15,11 @@
         <div class="clearfix"></div>
         <div class="box box-primary">
             <div class="box-body">
+
+                <form class="example" action="{!! url('') !!}/customers">
+                    <input type="text" class="search_btn" name="search" placeholder="Search.." value="{!! !empty($search) ? $search : '' !!}">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
                     @include('customers.table')
             </div>
         </div>

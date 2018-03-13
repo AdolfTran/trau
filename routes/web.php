@@ -27,3 +27,5 @@ Route::resource('machines', 'MachineController');
 Route::any('data_json', 'MachineController@getDataForDataTable');
 
 Route::resource('machineTypes', 'MachineTypeController');
+
+Route::resource('receives', 'ReceiveController');
