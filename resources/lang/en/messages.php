@@ -75,4 +75,5 @@ return [
     'receiver' => 'Người thu',
     'months' => 'Cho tháng',
     'sender' => 'Người gửi',
+    'so_tien_can_thanh_toan' => 'Số tiền còn lại cần thanh toán: ',
 ];

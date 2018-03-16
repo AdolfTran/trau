@@ -29,6 +29,7 @@ class Receive extends Model
 
     public $fillable = [
         'amount_money',
+        'user_id',
         'months',
         'date',
         'sender',

@@ -25,9 +25,6 @@
 <li class="{{ Request::is('cost*') ? 'active' : '' }}">
     <a href="{!! route('cost.index') !!}"><i class="fa fa-edit"></i><span>{!! __('messages.a_costs') !!}</span></a>
 </li>
-<li class="{{ Request::is('receives*') ? 'active' : '' }}">
-    <a href="{!! route('receives.index') !!}"><i class="fa fa-edit"></i><span>{!! __('messages.a_receives') !!}</span></a>
-</li>
 <?php } ?>
 
 

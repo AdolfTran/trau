@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateReceiveRequest;
 use App\Http\Requests\UpdateReceiveRequest;
+use App\Models\Receive;
 use App\Repositories\ReceiveRepository;
 use App\Http\Controllers\AppBaseController;
+use App\User;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\Redirect;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -41,7 +44,7 @@ class ReceiveController extends AppBaseController
      *
      * @return Response
      */
-    public function create()
+    public function create($id)
     {
         return view('receives.create');
     }
@@ -61,7 +64,7 @@ class ReceiveController extends AppBaseController
 
         Flash::success('Receive saved successfully.');
 
-        return redirect(route('receives.index'));
+        return redirect(route('showReceive', $input['user_id']));
     }
 
     /**
@@ -150,6 +153,21 @@ class ReceiveController extends AppBaseController
 
         Flash::success('Receive deleted successfully.');
 
-        return redirect(route('receives.index'));
+        return Redirect::back();
+    }
+
+    public function showReceive($id)
+    {
+        $receives = Receive::where('user_id', $id)->get();
+        $user = User::where('id', $id)->first();
+        $name = !empty($user) && !empty($user->name) ? $user->name : '';
+        return view('receives.index')
+            ->with('receives', $receives)
+            ->with('name', $name)
+            ->with('id', $id);
+    }
+    public function add($id)
+    {
+        return view('receives.create')->with('id', $id);
     }
 }

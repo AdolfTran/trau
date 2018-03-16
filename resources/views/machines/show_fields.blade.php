@@ -51,6 +51,13 @@
             {!! __('messages.add_machines') !!}
         </button>
     </div>
+    <div class="col-xs-2">
+    </div>
+    <div class="col-xs-4">
+        <a style="color: red" href="{!! route('showReceive', $id) !!}">
+        {!! __("messages.so_tien_can_thanh_toan") !!} {!! !empty($totalMoney) && $totalMoney > 0 ? number_format($totalMoney, 2, ",", " ") : 0  !!} VND
+        </a>
+    </div>
 </div>
 <div class="box box-primary" style="overflow: scroll; max-height: 550px;margin-bottom: 0px;padding-bottom: 10px;">
 <div class="col-xs-12">

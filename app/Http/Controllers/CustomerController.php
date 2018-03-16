@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\MachineType;
+use App\Models\Receive;
 use App\Repositories\CustomerRepository;
 use App\User;
 use Illuminate\Http\Request;
@@ -200,7 +201,29 @@ class CustomerController extends AppBaseController
         }
         $machines = DB::table('tb_customer_devices')->where('user_id', $id)->get();
 
-        return view('machines.show')->with('customer', $customer)->with('machines', $machines)->with('machineTypes', $machineTypes);
+        $_revenueMonths = DB::table('machine_types')
+            ->join('tb_customer_devices', 'machine_types.id', '=', 'tb_customer_devices.machine_type_id')
+            ->select('machine_types.*', 'tb_customer_devices.user_id')
+            ->where('tb_customer_devices.deleted_at', NULL)
+            ->where('tb_customer_devices.user_id', $id)->get();
+        $totalMoney = 0;
+        foreach ($_revenueMonths as $_revenueMonth)
+        {
+            if(!empty($_revenueMonth->price))
+            {
+                $totalMoney += $_revenueMonth->price;
+            }
+        }
+        $napTien = Receive::groupBy('user_id')
+            ->where('user_id', $id)
+            ->selectRaw('sum(amount_money) as sum, user_id')
+            ->pluck('sum','user_id');
+        $napTien = !empty($napTien) && !empty($napTien[$id]) ? $napTien[$id] : 0;
+        $totalMoney -= $napTien;
+
+        return view('machines.show')->with('customer', $customer)->with('machines', $machines)
+            ->with('machineTypes', $machineTypes)->with('totalMoney', $totalMoney)
+            ->with('id', $id);
     }
 
     public function reset(Request $request)
