@@ -34,7 +34,8 @@ class Receive extends Model
         'date',
         'sender',
         'receiver',
-        'description'
+        'description',
+        'tralai'
     ];
 
     /**

@@ -24,7 +24,7 @@
                 <!-- small box -->
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h4>0</h4>
+                        <h4>{!! isset($totalMoney) ? number_format("$totalMoney",0,",",".") : 0 !!} VND</h4>
                         <p>{{ __('messages.total_money_you_have_to_pay_x') }}</p>
                     </div>
                     <div class="icon">

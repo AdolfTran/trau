@@ -8,6 +8,7 @@
             <th>{{ __('messages.sender') }}</th>
             <th>{{ __('messages.receiver') }}</th>
             <th>{{ __('messages.description') }}</th>
+            <th>Hoàn lại</th>
             <th colspan="3">Action</th>
         </tr>
     </thead>
@@ -22,6 +23,7 @@
             <td>{!! $receive->sender !!}</td>
             <td>{!! $receive->receiver !!}</td>
             <td>{!! $receive->description !!}</td>
+            <td>{!! $receive->tralai && $receive->tralai == 1 ? 'Hoàn lại' : "Thu" !!}</td>
             <td>
                 {!! Form::open(['route' => ['receives.destroy', $receive->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>

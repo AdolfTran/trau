@@ -28,6 +28,15 @@
     {!! Form::text('description', null, ['class' => 'form-control']) !!}
 </div>
 
+<div class="form-group col-sm-6">
+    {!! Form::label('tralai', 'Hoàn lại:') !!}
+    <select style="height: 30px; width: 100px;" name="tralai">
+        <option value="0">Thu</option>
+        <option value="1">Trả lại</option>
+    </select>
+
+</div>
+
 {!! Form::hidden('user_id', $id, ['class' => 'form-control']) !!}
 
 <!-- Submit Field -->

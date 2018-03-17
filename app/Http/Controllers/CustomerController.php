@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
+use App\Models\Machine;
 use App\Models\MachineType;
 use App\Models\Receive;
 use App\Repositories\CustomerRepository;
@@ -200,22 +201,22 @@ class CustomerController extends AppBaseController
             return redirect(route('customers.index'));
         }
         $machines = DB::table('tb_customer_devices')->where('user_id', $id)->get();
-
-        $_revenueMonths = DB::table('machine_types')
-            ->join('tb_customer_devices', 'machine_types.id', '=', 'tb_customer_devices.machine_type_id')
-            ->select('machine_types.*', 'tb_customer_devices.user_id')
-            ->where('tb_customer_devices.deleted_at', NULL)
-            ->where('tb_customer_devices.user_id', $id)->get();
+        $machinesTypes = MachineType::pluck('price', 'id');
         $totalMoney = 0;
-        foreach ($_revenueMonths as $_revenueMonth)
+        foreach ($machines as $machine)
         {
-            if(!empty($_revenueMonth->price))
-            {
-                $totalMoney += $_revenueMonth->price;
+            $_d = !empty($machine->date) ? $machine->date : null;
+            $month = Machine::getMonths($_d);
+            if($month != '' && !empty($machine->machine_type_id) && !empty($machinesTypes[$machine->machine_type_id])){
+                $totalMoney += $month * $machinesTypes[$machine->machine_type_id];
+                // tinh so ngay le.
+                $soNgayLe = Machine::laySoTienNgayLe($_d);
+                $totalMoney -= ($machinesTypes[$machine->machine_type_id]/30.5) * $soNgayLe;
             }
         }
         $napTien = Receive::groupBy('user_id')
             ->where('user_id', $id)
+            ->where('tralai', 0)
             ->selectRaw('sum(amount_money) as sum, user_id')
             ->pluck('sum','user_id');
         $napTien = !empty($napTien) && !empty($napTien[$id]) ? $napTien[$id] : 0;
