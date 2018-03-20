@@ -43,6 +43,7 @@
 
             <!-- Header Navbar -->
             <nav class="navbar navbar-static-top display_menu" role="navigation">
+                <span id="show_hide_menu" style="margin-left: 30px;position: absolute;margin-top: 14px;color: #fff;display:none">Ẩn hiện Menu</span>
                 <!-- Navbar Right Menu -->
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
@@ -162,6 +163,10 @@
     @yield('scripts')
 <script type="text/javascript">
     $(document).ready(function(){
+        var check = mobilecheck();
+        if(check) {
+            $('#show_hide_menu').css('display', 'block');
+        }
         $('.display_menu').click(function(){
             var check = mobilecheck();
             if(check) {
