@@ -63,7 +63,7 @@ return [
     'cost_month_x' => 'Chi phí dự kiến tháng ',
     'machine_statistics' => 'Thống kê máy',
     'expected_amount_of_month_x' => 'Số tiền dự kiến tháng ',
-    'total_money_you_have_to_pay_x' => 'Tổng số tiền phải trả',
+    'total_money_you_have_to_pay_x' => 'Tổng số tiền phải trả cho trước tháng ',
     'a_costs' => 'Quản lý chi tiêu',
     'costs' => 'Chi tiêu',
     'amount_of_money' => 'Số tiền',

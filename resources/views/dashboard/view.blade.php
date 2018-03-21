@@ -9,7 +9,7 @@
                 <div class="small-box bg-aqua">
                     <div class="inner">
                         <h4>{!! isset($revenueMonth) ? number_format("$revenueMonth",0,",",".") : 0 !!} VND</h4>
-                        <p>{{ __('messages.expected_amount_of_month_x') . date('m', strtotime(now())) }}</p>
+                        <p>{{ __('messages.expected_amount_of_month_x') . date('m/Y', strtotime(now())) }}</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-shopping-cart"></i>
@@ -25,7 +25,7 @@
                 <div class="small-box bg-green">
                     <div class="inner">
                         <h4>{!! isset($totalMoney) ? number_format("$totalMoney",0,",",".") : 0 !!} VND</h4>
-                        <p>{{ __('messages.total_money_you_have_to_pay_x') }}</p>
+                        <p>{{ __('messages.total_money_you_have_to_pay_x') . date('m/Y', strtotime(now())) }}</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>

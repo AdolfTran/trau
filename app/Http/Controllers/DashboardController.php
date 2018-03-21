@@ -40,16 +40,21 @@ class DashboardController extends Controller
             {
                 $_d = !empty($machine->date) ? $machine->date : null;
                 $month = Machine::getMonths($_d);
-                if($month != '' && !empty($machine->machine_type_id) && !empty($machinesTypes[$machine->machine_type_id])){
+
+                if($month >= 0 && !empty($machine->machine_type_id) && !empty($machinesTypes[$machine->machine_type_id])){
                     $totalMoney += $month * $machinesTypes[$machine->machine_type_id];
                     // tinh so ngay le.
                     $soNgayLe = Machine::laySoTienNgayLe($_d);
-                    $totalMoney -= ($machinesTypes[$machine->machine_type_id]/30.5) * $soNgayLe;
+                    if($soNgayLe > 0) {
+                        $totalMoney += ($machinesTypes[$machine->machine_type_id] / 30.5) * $soNgayLe;
+                    }
                 }
             }
+
+            $_m = date("m/Y");
             $napTien = Receive::groupBy('user_id')
                 ->where('user_id', Auth::user()->id)
-                ->where('tralai', 0)
+                ->where('months', "<", $_m)
                 ->selectRaw('sum(amount_money) as sum, user_id')
                 ->pluck('sum','user_id');
             $napTien = !empty($napTien) && !empty($napTien[Auth::user()->id]) ? $napTien[Auth::user()->id] : 0;

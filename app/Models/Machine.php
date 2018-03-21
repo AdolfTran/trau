@@ -63,14 +63,16 @@ class Machine extends Model
         $d = explode('/', $date);
         if(!empty($d[0]) && !empty($d[1]) && !empty($d[2])){
             $d1 = $d[2] . '-' . $d[1] . '-' . $d[0];
-            $d2 = date('Y-m-d');
+            $d2 = date('Y-m') . '-01';
             $date1 = new \DateTime($d1);
             $date2 = new \DateTime($d2);
-
+            if($d[2] . $d[1] >= date('Y') .date('m')){
+                return -1;
+            }
             $diff = $date2->diff($date1);
             return($diff->format('%y') * 12) + $diff->format('%m');
         }
-        return '';
+        return 0;
     }
 
     public static function laySoTienNgayLe($date)
@@ -79,10 +81,15 @@ class Machine extends Model
         if(!empty($d[0]) && !empty($d[1]) && !empty($d[2])){
             $d1 = $d[0];
             $d2 = 1;
-            if($d2 >= $d1){
+            if($d2 == $d1){
                 return 0;
             } else {
-                return $d1 - $d2;
+                $number = cal_days_in_month(CAL_GREGORIAN, $d[1], $d[2]);
+                if($number > $d1) {
+                    return $number - $d1 + 1;
+                } else {
+                    return 0;
+                }
             }
         }
         return 0;
