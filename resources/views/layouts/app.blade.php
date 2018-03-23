@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{!! __('messages.trau') !!}</title>
+    <title>Damintech</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap 3.3.7 -->
@@ -38,7 +38,7 @@
 
             <!-- Logo -->
             <a href="#" class="logo">
-                <b>{!! __('messages.trau') !!}</b>
+                <b>Damintech</b>
             </a>
 
             <!-- Header Navbar -->
@@ -98,7 +98,7 @@
 
         <!-- Main Footer -->
         <footer class="main-footer" style="max-height: 100px;text-align: center">
-            <strong>Hai @ 2018 </strong> All rights reserved.
+           Coppyright by <strong>Damintech @ 2018 </strong> All rights reserved.
         </footer>
 
     </div>

@@ -70,7 +70,7 @@ class Machine extends Model
                 return -1;
             }
             $diff = $date2->diff($date1);
-            return($diff->format('%y') * 12) + $diff->format('%m');
+            return($diff->format('%y') * 12) + $diff->format('%m')+1;
         }
         return 0;
     }
