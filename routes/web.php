@@ -1,6 +1,12 @@
 <?php
 Auth::routes();
 
+Route::get('/homes', function () {
+    return redirect('/');
+});
+Route::get('/home', function () {
+    return redirect('/');
+});
 
 Route::post('addMachines')->uses('MachineController@addMachines')->name('addMachines');
 Route::post('removeMachines')->uses('MachineController@removeMachines')->name('removeMachines');
