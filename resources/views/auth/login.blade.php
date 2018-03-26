@@ -35,7 +35,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="{{ url('/home') }}"><b>trau </b>Generator</a>
+        <img style="width: 111%;margin-left: -20px;" src="{!! url('') !!}/public/img/logo.png" alt="">
     </div>
 
     <!-- /.login-logo -->
