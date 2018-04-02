@@ -183,8 +183,9 @@ class CustomerController extends AppBaseController
         return redirect(route('customers.index'));
     }
 
-    public function add($id)
+    public function add($id, Request $request)
     {
+        $requestDate = $request->only('date');
         $customer = User::findOrFail($id);
 
         $_machineTypes = MachineType::all();
@@ -205,11 +206,20 @@ class CustomerController extends AppBaseController
         $machines = DB::table('tb_customer_devices')->where('user_id', $id)->get();
         $machinesTypes = MachineType::pluck('price', 'id');
         $totalMoney = 0;
+        $min = 99999999;
+        $minD = date("Y-m-d");
+        $maxD = date("Y-m-d");
         foreach ($machines as $machine)
         {
             $_d = !empty($machine->date) ? $machine->date : null;
             $month = Machine::getMonths($_d);
-
+            // tinh min va max of ngay.
+            $_da = explode("/", $_d);
+            $check = $_da[2] . $_da[1]. $_da[0];
+            if($check < $min){
+                $min = $check;
+                $minD = $_da[2] . '-' . $_da[1] . '-' . $_da[0];
+            }
             if($month >= 0 && !empty($machine->machine_type_id) && !empty($machinesTypes[$machine->machine_type_id])){
                 $totalMoney += $month * $machinesTypes[$machine->machine_type_id];
                 // tinh so ngay le.
@@ -219,6 +229,15 @@ class CustomerController extends AppBaseController
                 }
             }
         }
+        $listDate = [];
+        while ($minD <= $maxD){
+            $_minD = explode('-', $minD);
+            $listDate[$_minD[1] . '/' . $_minD[0]] = $_minD[1] . '/' . $_minD[0];
+            $time = strtotime($minD);
+            $minD = date("Y-m-d", strtotime("+1 month", $time));
+        }
+        $_maxD = explode('-', $maxD);
+        $listDate[$_maxD[1] . '/' . $_maxD[0]] = $_maxD[1] . '/' . $_maxD[0];
         $_m = date("m/Y");
         $napTien = Receive::groupBy('user_id')
             ->where('user_id', $id)
@@ -229,6 +248,9 @@ class CustomerController extends AppBaseController
         $totalMoney -= $napTien;
         // get receives
         $listReceives = [];
+        if(!empty($requestDate)){
+            $_m = $requestDate['date'];
+        }
         $receives = Receive::where('user_id', $id)
             ->where('months', $_m)
             ->orderBy('tralai')->get();
@@ -238,7 +260,8 @@ class CustomerController extends AppBaseController
 
         return view('machines.show')->with('customer', $customer)->with('machines', $machines)
             ->with('machineTypes', $machineTypes)->with('totalMoney', $totalMoney)
-            ->with('id', $id)->with('listReceives', $listReceives)->with('listPrice', $listPrice);
+            ->with('id', $id)->with('listReceives', $listReceives)->with('listPrice', $listPrice)
+            ->with('listDate', $listDate)->with('_m', $_m);
     }
 
     public function reset(Request $request)

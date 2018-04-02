@@ -52,6 +52,15 @@
         </button>
     </div>
     <div class="col-xs-2">
+        <select class="form-control" id="search_date">
+            @if(!empty($listDate))
+                @foreach($listDate as $_listDate)
+                    <option {!! $_m == $_listDate ? "selected" : "" !!} value="{!! $_listDate !!}">{!! $_listDate !!}</option>
+                @endforeach
+            @else
+                <option value="{!! date('m/Y') !!}">{!! date('m/Y') !!}</option>
+            @endif
+        </select>
     </div>
     <div class="col-xs-4">
         <a style="color: red">
@@ -606,6 +615,9 @@
                 var hours = $('#receives_hours').val();
                 var _money = money/30.5/24 * hours;
                 $('#receives_amount_money').val(parseFloat(_money).toFixed(2));
+            });
+            $('#search_date').change(function(){
+                window.location.replace('{!! route('addCustomers', [$customer->id]) !!}?date=' + $(this).val());
             });
         });
 
