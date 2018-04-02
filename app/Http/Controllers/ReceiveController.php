@@ -170,4 +170,23 @@ class ReceiveController extends AppBaseController
     {
         return view('receives.create')->with('id', $id);
     }
+
+    public function addReceive(Request $request){
+        $data = $request->all();
+        if(!empty($data)){
+            $idInsert = Receive::insertGetId($data);
+            return json_encode($idInsert);
+        }
+        return json_encode(0);
+    }
+
+    public function removeReceives(Request $request)
+    {
+        $data = $request->all();
+        if(!empty($data) && !empty($data['data'])){
+            $id = $data['data'];
+            Receive::where('id', $id)->delete();
+        }
+        return json_encode(1);
+    }
 }

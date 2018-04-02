@@ -87,3 +87,10 @@ form.example::after {
     clear: both;
     display: table;
 }
+.main_table{
+    font-size: 15px;
+    background-color: #cec9c9;
+}
+.sub_table{
+    font-size: 12px;
+}

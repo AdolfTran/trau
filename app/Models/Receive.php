@@ -35,7 +35,9 @@ class Receive extends Model
         'sender',
         'receiver',
         'description',
-        'tralai'
+        'tralai',
+        'customer_devices_id',
+        'hours'
     ];
 
     /**

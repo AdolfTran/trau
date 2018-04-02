@@ -189,9 +189,11 @@ class CustomerController extends AppBaseController
 
         $_machineTypes = MachineType::all();
         $machineTypes = array();
+        $listPrice = [];
 
         foreach($_machineTypes as $_machineType)
         {
+            $listPrice[$_machineType['id']] = $_machineType['price'];
             $machineTypes[$_machineType['id']] = $_machineType['name'] . ' - ' . $_machineType['price'];
         }
 
@@ -220,15 +222,23 @@ class CustomerController extends AppBaseController
         $_m = date("m/Y");
         $napTien = Receive::groupBy('user_id')
             ->where('user_id', $id)
-            ->where('months', "<", $_m)
+            ->where('tralai', "!=", 3)
             ->selectRaw('sum(amount_money) as sum, user_id')
             ->pluck('sum','user_id');
         $napTien = !empty($napTien) && !empty($napTien[$id]) ? $napTien[$id] : 0;
         $totalMoney -= $napTien;
+        // get receives
+        $listReceives = [];
+        $receives = Receive::where('user_id', $id)
+            ->where('months', $_m)
+            ->orderBy('tralai')->get();
+        foreach ($receives as $receive){
+            $listReceives[$receive['customer_devices_id']][] = $receive;
+        }
 
         return view('machines.show')->with('customer', $customer)->with('machines', $machines)
             ->with('machineTypes', $machineTypes)->with('totalMoney', $totalMoney)
-            ->with('id', $id);
+            ->with('id', $id)->with('listReceives', $listReceives)->with('listPrice', $listPrice);
     }
 
     public function reset(Request $request)

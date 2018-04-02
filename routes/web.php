@@ -9,7 +9,9 @@ Route::get('/home', function () {
 });
 
 Route::post('addMachines')->uses('MachineController@addMachines')->name('addMachines');
+Route::post('addReceives')->uses('ReceiveController@addReceive')->name('addReceives');
 Route::post('removeMachines')->uses('MachineController@removeMachines')->name('removeMachines');
+Route::post('removeReceives')->uses('ReceiveController@removeReceives')->name('removeReceives');
 Route::group(['middleware' => 'admin'], function () {
     Route::resource('homes', 'homeController');
     Route::resource('employees', 'EmployeeController');
