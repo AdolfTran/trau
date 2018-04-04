@@ -94,4 +94,90 @@ class Machine extends Model
         }
         return 0;
     }
+
+    public static function totalMoneyForMachine($machine, $user_id)
+    {
+        $_d = !empty($machine->date) ? $machine->date : null;
+        $month = self::getMonths($_d);
+        $tien = 0;
+        $machinesTypes = MachineType::pluck('price', 'id');
+        if(!empty($machine->machine_type_id)) {
+            $machineType = MachineType::where('id', $machine->machine_type_id)->first();
+            $parent_id = $machineType->parent_id;
+            if(!empty($parent_id)){
+                //doan nay tinh tien tung thang.
+                $start = explode('/', $_d);
+                $minD = $start[2] . '-' . $start[1];
+                $maxD = date('Y-m');
+                $i = 0;
+                while ($minD <= $maxD){
+                    $i++;
+                    $time = strtotime($maxD . '-01');
+                    // tinh tien
+                    $date = date('m/Y', $time);
+                    $_machineTypes = MachineType::where(function ($query) use ($date) {
+                        $query->where('date', '=', $date);
+                    })->where(function ($query) use ($parent_id) {
+                        $query->where('parent_id', $parent_id)
+                            ->orWhere('id', $parent_id);
+                    })->orderBy('date')->orderBy('id', 'DESC')->first();
+                    if(empty($_machineTypes)){
+                        if(!isset($lastDate)){
+                            $_machineTypes = MachineType::where(function ($query) use ($lastDate, $date) {
+                                $query->whereBetween('date', [$lastDate, $date]);
+                            })->where(function ($query) use ($parent_id) {
+                                $query->where('parent_id', $parent_id)
+                                    ->orWhere('id', $parent_id);
+                            })->orderBy('date')->orderBy('id', 'DESC')->first();
+                        }
+                    }
+                    if(empty($_machineTypes)){
+                        $_machineTypes = MachineType::where(function ($query) use ($date) {
+                            $query->where('date', null);
+                        })->where(function ($query) use ($parent_id) {
+                            $query->where('parent_id', $parent_id)
+                                ->orWhere('id', $parent_id);
+                        })->orderBy('date')->orderBy('id', 'DESC')->first();
+                    }
+                    if(!empty($_machineTypes)){
+                        if($minD == $maxD){
+                            $soNgayLe = self::laySoTienNgayLe($_d);
+                            if($soNgayLe > 0) {
+                                $tien += ($_machineTypes->price / 30.5) * $soNgayLe;
+                            }
+                        } else {
+                            $tien += $_machineTypes->price;
+                        }
+                    }
+                    $lastDate = date("m/Y", strtotime($time));
+                    $maxD = date("Y-m", strtotime("-1 month", $time));
+                }
+            } else {
+                if($month >= 0 && !empty($machine->machine_type_id) && !empty($machinesTypes[$machine->machine_type_id])){
+                    $tien += $month * $machinesTypes[$machine->machine_type_id];
+                    // tinh so ngay le.
+                    $soNgayLe = self::laySoTienNgayLe($_d);
+                    if($soNgayLe > 0) {
+                        $tien += ($machinesTypes[$machine->machine_type_id] / 30.5) * $soNgayLe;
+                    }
+                }
+            }
+        }
+        // doan nay tinh tien phu thu va hoan tra may off.
+        $phuThu = Receive::groupBy('user_id')
+            ->where('user_id', $user_id)
+            ->where('customer_devices_id', $machine->id)
+            ->where('tralai', 2)
+            ->selectRaw('sum(amount_money) as sum, user_id')
+            ->pluck('sum','user_id');
+        $tien += !empty($phuThu[$user_id]) ? $phuThu[$user_id] : 0;
+        $hoanTra = Receive::groupBy('user_id')
+            ->where('user_id', $user_id)
+            ->where('customer_devices_id', $machine->id)
+            ->where('tralai', 3)
+            ->selectRaw('sum(amount_money) as sum, user_id')
+            ->pluck('sum','user_id');
+        $tien -= !empty($hoanTra[$user_id]) ? $hoanTra[$user_id] : 0;
+        return $tien;
+    }
 }

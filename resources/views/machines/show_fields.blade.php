@@ -63,7 +63,7 @@
         </select>
     </div>
     <div class="col-xs-4">
-        <a style="color: red">
+        <a style="color: red" href="{!! route('showReceive', $id) !!}">
         {!! __("messages.so_tien_can_thanh_toan") !!} {!! !empty($totalMoney) && $totalMoney > 0 ? number_format($totalMoney, 2, ",", " ") : 0  !!} VND
         </a>
     </div>
@@ -91,7 +91,7 @@
             $loaiThanhToan = [
               '1' => 'Thu tiền',
               '2' => 'Phụ thu',
-              '3' => 'Trả lại'
+              '3' => 'Hoàn tiền máy off'
             ];
         ?>
         @foreach($machines as $machine)
@@ -249,7 +249,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body col-sm-12">
+                <div class="modal-body col-sm-12" id="contentShowPass">
 
                 </div>
                 <div class="modal-footer">
@@ -270,9 +270,8 @@
                 <div class="form-group col-sm-6">
                     <label for="name_machines">Trả lại</label>
                     <select class="form-control" name="tralai" id="receives_tralai">
-                        <option value="1">Thu tiền</option>
                         <option value="2">Phụ thu</option>
-                        <option value="3">Trả lại</option>
+                        <option value="3">Hoàn tiền máy off</option>
                     </select>
                 </div>
                 <div class="form-group col-sm-6" id="input_hours" style="display: none">
@@ -414,6 +413,9 @@
                         'user_id': "{!! $customer['id'] !!}"
                     },
                     method: 'POST',
+                    success: function(data) {
+                        location.reload();
+                    }
                 });
             });
 
@@ -450,6 +452,9 @@
                         'data':id
                     },
                     method: 'POST',
+                    success: function(data) {
+                        location.reload();
+                    }
                 });
             });
         });
@@ -545,7 +550,7 @@
                        _html += "<td>Phụ thu</td>";
                    } else {
 
-                       _html += "<td>Trả lại</td>";
+                       _html += "<td>Hoàn tiền máy off</td>";
                    }
                _html += "<td id='ip_"+insertId+"'>\n" +
                    "<div class='btn-group'>\n" +

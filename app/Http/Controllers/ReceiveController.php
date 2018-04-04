@@ -59,6 +59,12 @@ class ReceiveController extends AppBaseController
     public function store(CreateReceiveRequest $request)
     {
         $input = $request->all();
+        if(empty($input['months'])){
+            $input['months'] = date('m/Y');
+        }
+        $input['tralai'] = 1;
+        $input['customer_devices_id'] = 0;
+        $input['hours'] = 0;
 
         $receive = $this->receiveRepository->create($input);
 
@@ -158,7 +164,7 @@ class ReceiveController extends AppBaseController
 
     public function showReceive($id)
     {
-        $receives = Receive::where('user_id', $id)->get();
+        $receives = Receive::where('user_id', $id)->where('tralai', 1)->get();
         $user = User::where('id', $id)->first();
         $name = !empty($user) && !empty($user->name) ? $user->name : '';
         return view('receives.index')

@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateMachineTypeRequest;
 use App\Http\Requests\UpdateMachineTypeRequest;
+use App\Models\Machine;
+use App\Models\MachineType;
 use App\Repositories\MachineTypeRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\DB;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -30,10 +33,27 @@ class MachineTypeController extends AppBaseController
     public function index(Request $request)
     {
         $this->machineTypeRepository->pushCriteria(new RequestCriteria($request));
-        $machineTypes = $this->machineTypeRepository->all();
+        $machineTypes = DB::table('machine_types')->orderBy('id', 'DESC')->get();
+        $listMachineTypes = [];
+        $listParent = [];
+        foreach ($machineTypes as $machineType){
+            if($machineType->parent_id == null){
+                if(!in_array($machineType->id, $listParent)){
 
+                    $listMachineTypes[$machineType->id] = $machineType;
+                }
+            } else {
+                $listParent[$machineType->parent_id] = $machineType->parent_id;
+                if(!empty($listMachineTypes[$machineType->parent_id])){
+
+                } else {
+                    $listMachineTypes[$machineType->parent_id] = $machineType;
+                }
+            }
+        }
+        ksort($listMachineTypes);
         return view('machine_types.index')
-            ->with('machineTypes', $machineTypes);
+            ->with('machineTypes', $listMachineTypes);
     }
 
     /**
@@ -121,11 +141,34 @@ class MachineTypeController extends AppBaseController
 
             return redirect(route('machineTypes.index'));
         }
-
-        $machineType = $this->machineTypeRepository->update($request->all(), $id);
+        $inputs = $request->only('price', 'date');
+        $data = $request->only('price', 'date', 'name');
+        if(!empty($machineType->parent_id)){
+            $check = MachineType::where('date', $inputs['date'])->where('parent_id', $machineType->parent_id)->first();
+            if(!empty($check)){
+                $this->machineTypeRepository->update($inputs, $id);
+                Flash::success('Machine Type updated successfully.');
+                return redirect(route('machineTypes.index'));
+            }
+            $data['parent_id'] = $machineType->parent_id;
+        } else {
+            $data['parent_id'] = $id;
+        }
+        DB::beginTransaction();
+        try {
+            $newId = MachineType::insertGetId($data);
+            $list = DB::table('tb_customer_devices')->where('machine_type_id', $id)->get();
+            foreach ($list as $_list){
+                DB::table('tb_customer_devices')->where('id', $_list->id)->update(['machine_type_id' => $newId]);
+            }
+            DB::commit();
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+        }
 
         Flash::success('Machine Type updated successfully.');
-
         return redirect(route('machineTypes.index'));
     }
 

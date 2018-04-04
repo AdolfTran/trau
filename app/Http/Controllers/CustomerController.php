@@ -204,7 +204,6 @@ class CustomerController extends AppBaseController
             return redirect(route('customers.index'));
         }
         $machines = DB::table('tb_customer_devices')->where('user_id', $id)->get();
-        $machinesTypes = MachineType::pluck('price', 'id');
         $totalMoney = 0;
         $min = 99999999;
         $minD = date("Y-m-d");
@@ -212,7 +211,6 @@ class CustomerController extends AppBaseController
         foreach ($machines as $machine)
         {
             $_d = !empty($machine->date) ? $machine->date : null;
-            $month = Machine::getMonths($_d);
             // tinh min va max of ngay.
             $_da = explode("/", $_d);
             $check = $_da[2] . $_da[1]. $_da[0];
@@ -220,14 +218,9 @@ class CustomerController extends AppBaseController
                 $min = $check;
                 $minD = $_da[2] . '-' . $_da[1] . '-' . $_da[0];
             }
-            if($month >= 0 && !empty($machine->machine_type_id) && !empty($machinesTypes[$machine->machine_type_id])){
-                $totalMoney += $month * $machinesTypes[$machine->machine_type_id];
-                // tinh so ngay le.
-                $soNgayLe = Machine::laySoTienNgayLe($_d);
-                if($soNgayLe > 0) {
-                    $totalMoney += ($machinesTypes[$machine->machine_type_id] / 30.5) * $soNgayLe;
-                }
-            }
+            // tinh tien cho tung thang va tung may.
+            $tien = Machine::totalMoneyForMachine($machine, $id);
+            $totalMoney += $tien;
         }
         $listDate = [];
         while ($minD <= $maxD){
@@ -241,7 +234,7 @@ class CustomerController extends AppBaseController
         $_m = date("m/Y");
         $napTien = Receive::groupBy('user_id')
             ->where('user_id', $id)
-            ->where('tralai', "!=", 3)
+            ->where('tralai', 1)
             ->selectRaw('sum(amount_money) as sum, user_id')
             ->pluck('sum','user_id');
         $napTien = !empty($napTien) && !empty($napTien[$id]) ? $napTien[$id] : 0;
@@ -253,6 +246,7 @@ class CustomerController extends AppBaseController
         }
         $receives = Receive::where('user_id', $id)
             ->where('months', $_m)
+            ->where('tralai', '!=', 1)
             ->orderBy('tralai')->get();
         foreach ($receives as $receive){
             $listReceives[$receive['customer_devices_id']][] = $receive;

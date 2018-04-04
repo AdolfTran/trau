@@ -3,10 +3,10 @@
     {!! Form::number('amount_money', null, ['class' => 'form-control']) !!}
 </div>
 
-<div class="form-group col-sm-6">
-    {!! Form::label('months', __('messages.months') . ':') !!}
-    {!! Form::text('months', null, ['class' => 'form-control', 'data-provide' => 'datepicker', 'data-date-format'=>'mm/yyyy']) !!}
-</div>
+{{--<div class="form-group col-sm-6">--}}
+    {{--{!! Form::label('months', __('messages.months') . ':') !!}--}}
+    {{--{!! Form::text('months', null, ['class' => 'form-control', 'data-provide' => 'datepicker', 'data-date-format'=>'mm/yyyy']) !!}--}}
+{{--</div>--}}
 
 <div class="form-group col-sm-6">
     {!! Form::label('date', __('messages.date') . ':') !!}
@@ -28,14 +28,14 @@
     {!! Form::text('description', null, ['class' => 'form-control']) !!}
 </div>
 
-<div class="form-group col-sm-6">
-    {!! Form::label('tralai', 'Hoàn lại:') !!}
-    <select style="height: 30px; width: 100px;" name="tralai">
-        <option value="0">Thu</option>
-        <option value="1">Trả lại</option>
-    </select>
+{{--<div class="form-group col-sm-6">--}}
+    {{--{!! Form::label('tralai', 'Hoàn lại:') !!}--}}
+    {{--<select style="height: 30px; width: 100px;" name="tralai">--}}
+        {{--<option value="0">Thu</option>--}}
+        {{--<option value="1">Trả lại</option>--}}
+    {{--</select>--}}
 
-</div>
+{{--</div>--}}
 
 {!! Form::hidden('user_id', $id, ['class' => 'form-control']) !!}
 

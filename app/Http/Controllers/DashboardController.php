@@ -38,30 +38,28 @@ class DashboardController extends Controller
             $totalMoney = 0;
             foreach ($machines as $machine)
             {
-                $_d = !empty($machine->date) ? $machine->date : null;
-                $month = Machine::getMonths($_d);
-
-                if($month >= 0 && !empty($machine->machine_type_id) && !empty($machinesTypes[$machine->machine_type_id])){
-                    $totalMoney += $month * $machinesTypes[$machine->machine_type_id];
-                    // tinh so ngay le.
-                    $soNgayLe = Machine::laySoTienNgayLe($_d);
-                    if($soNgayLe > 0) {
-                        $totalMoney += ($machinesTypes[$machine->machine_type_id] / 30.5) * $soNgayLe;
-                    }
-                }
+                $tien = Machine::totalMoneyForMachine($machine, Auth::user()->id);
+                $totalMoney += $tien;
             }
 
             $_m = date("m/Y");
             $napTien = Receive::groupBy('user_id')
                 ->where('user_id', Auth::user()->id)
-                ->where('months', "<", $_m)
+                ->where('tralai', 1)
                 ->selectRaw('sum(amount_money) as sum, user_id')
                 ->pluck('sum','user_id');
             $napTien = !empty($napTien) && !empty($napTien[Auth::user()->id]) ? $napTien[Auth::user()->id] : 0;
             $totalMoney -= $napTien;
+            $receives = Receive::where('user_id', Auth::user()->id)
+                ->where('months', $_m)
+                ->where('tralai', '!=', 1)
+                ->orderBy('tralai')->get();
+            foreach ($receives as $receive){
+                $listReceives[$receive['customer_devices_id']][] = $receive;
+            }
 
             return view('dashboard.view')->with('revenueMonth', $revenueMonth)->with('listMachines', $listMachines)
-                ->with('totalMoney', $totalMoney);
+                ->with('totalMoney', $totalMoney)->with('machines', $machines)->with('listReceives', $listReceives);
         }
         $countCustomer = DB::table('users')->where('role', 3)->count();
         $listMachines = DB::table('tb_customer_devices')->where('deleted_at', NULL)->pluck('machine_type_id', 'id');

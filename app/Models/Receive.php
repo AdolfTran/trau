@@ -60,7 +60,7 @@ class Receive extends Model
      */
     public static $rules = [
         'amount_money' => 'required',
-        'months' => 'required'
+//        'months' => 'required'
     ];
 
     
