@@ -191,11 +191,65 @@ class CustomerController extends AppBaseController
         $_machineTypes = MachineType::all();
         $machineTypes = array();
         $listPrice = [];
-
+        $listParent = [];
         foreach($_machineTypes as $_machineType)
         {
-            $listPrice[$_machineType['id']] = $_machineType['price'];
-            $machineTypes[$_machineType['id']] = $_machineType['name'] . ' - ' . $_machineType['price'];
+            if($_machineType->parent_id == null){
+                $listPrice[$_machineType['id']] = $_machineType['price'];
+                $machineTypes[$_machineType['id']] = $_machineType['name'] . ' - ' . $_machineType['price'];
+                $listParent[$_machineType->id] = $_machineType->id;
+            } else {
+                // tinh toan lai lay ngay thuc.
+                $date = date('m/Y');
+
+                if(!empty($requestDate)){
+                    $date = $requestDate['date'];
+                }
+                $parent_id = $_machineType->parent_id;
+                unset($machineTypes[$parent_id]);
+                $_machineTypes = MachineType::where(function ($query) use ($date) {
+                    $query->where('date', '=', $date);
+                })->where(function ($query) use ($parent_id) {
+                    $query->where('parent_id', $parent_id)
+                        ->orWhere('id', $parent_id);
+                })->orderBy('id', 'DESC')->first();
+                if(empty($_machineTypes)){
+                    $_machineTypes = MachineType::where(function ($query) use ( $date) {
+                        $query->where('date', "<=", $date);
+                    })->where(function ($query) use ($parent_id) {
+                        $query->where('parent_id', $parent_id)
+                            ->orWhere('id', $parent_id);
+                    })->orderBy('date', 'DESC')->orderBy('id', 'DESC')->first();
+                }
+                if(empty($_machineTypes)){
+                    $_machineTypes = MachineType::where(function ($query) use ($date) {
+                        $query->where('date', null);
+                    })->where(function ($query) use ($parent_id) {
+                        $query->where('parent_id', $parent_id)
+                            ->orWhere('id', $parent_id);
+                    })->orderBy('id', 'DESC')->first();
+                }
+                if(in_array($_machineType->parent_id, $listParent)){
+                    if(!empty($machineTypes[$_machineType->parent_id])){
+                    } else {
+                        $listPrice[$_machineTypes['parent_id']] = $_machineTypes['price'];
+                        $machineTypes[$_machineTypes['parent_id']] = $_machineTypes['name'] . ' - ' . $_machineTypes['price'];
+                    }
+                }
+            }
+        }
+        $subMT = [];
+        $subLp = [];
+        foreach ($listParent as $parent){
+            $v = MachineType::where('parent_id', $parent)->orderBy('id', 'DESC')->first();
+            if(!empty($machineTypes[$parent])){
+
+                $subMT[$v->id] = $machineTypes[$parent];
+            }
+            if(!empty($listPrice[$parent])){
+
+                $subLp[$v->id] = $listPrice[$parent];
+            }
         }
 
         if (empty($customer)) {
@@ -253,8 +307,8 @@ class CustomerController extends AppBaseController
         }
 
         return view('machines.show')->with('customer', $customer)->with('machines', $machines)
-            ->with('machineTypes', $machineTypes)->with('totalMoney', $totalMoney)
-            ->with('id', $id)->with('listReceives', $listReceives)->with('listPrice', $listPrice)
+            ->with('machineTypes', $subMT)->with('totalMoney', $totalMoney)
+            ->with('id', $id)->with('listReceives', $listReceives)->with('listPrice', $subLp)
             ->with('listDate', $listDate)->with('_m', $_m);
     }
 

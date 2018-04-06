@@ -33,7 +33,7 @@ class MachineTypeController extends AppBaseController
     public function index(Request $request)
     {
         $this->machineTypeRepository->pushCriteria(new RequestCriteria($request));
-        $machineTypes = DB::table('machine_types')->orderBy('id', 'DESC')->where('deleted_at', null)->get();
+        $machineTypes = DB::table('machine_types')->orderBy('id', 'DESC')->orderBy('date', 'DESC')->where('deleted_at', null)->get();
         $listMachineTypes = [];
         $listParent = [];
         foreach ($machineTypes as $machineType){
@@ -51,16 +51,14 @@ class MachineTypeController extends AppBaseController
                 })->where(function ($query) use ($parent_id) {
                     $query->where('parent_id', $parent_id)
                         ->orWhere('id', $parent_id);
-                })->orderBy('date')->orderBy('id', 'DESC')->first();
+                })->orderBy('id', 'DESC')->first();
                 if(empty($_machineTypes)){
-                    if(!isset($listId)){
-                        $_machineTypes = MachineType::where(function ($query) use ( $date) {
-                            $query->where('date', ">=", $date);
-                        })->where(function ($query) use ($parent_id) {
-                            $query->where('parent_id', $parent_id)
-                                ->orWhere('id', $parent_id);
-                        })->orderBy('date')->orderBy('id', 'DESC')->first();
-                    }
+                    $_machineTypes = MachineType::where(function ($query) use ( $date) {
+                        $query->where('date', "<=", $date);
+                    })->where(function ($query) use ($parent_id) {
+                        $query->where('parent_id', $parent_id)
+                            ->orWhere('id', $parent_id);
+                    })->orderBy('date', 'DESC')->orderBy('id', 'DESC')->first();
                 }
                 if(empty($_machineTypes)){
                     $_machineTypes = MachineType::where(function ($query) use ($date) {
@@ -68,9 +66,8 @@ class MachineTypeController extends AppBaseController
                     })->where(function ($query) use ($parent_id) {
                         $query->where('parent_id', $parent_id)
                             ->orWhere('id', $parent_id);
-                    })->orderBy('date')->orderBy('id', 'DESC')->first();
+                    })->orderBy('id', 'DESC')->first();
                 }
-
                 $listParent[$machineType->parent_id] = $machineType->parent_id;
                 if(!empty($listMachineTypes[$machineType->parent_id])){
 

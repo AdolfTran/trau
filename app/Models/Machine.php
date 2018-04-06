@@ -125,12 +125,12 @@ class Machine extends Model
                     if(empty($_machineTypes)){
                         if(!isset($listId)){
                             $_machineTypes = MachineType::where(function ($query) use ($listId, $date) {
-                                $query->where('date', ">=", $date)
+                                $query->where('date', "<=", $date)
                                 ->whereNotIn('id', $listId);
                             })->where(function ($query) use ($parent_id) {
                                 $query->where('parent_id', $parent_id)
                                     ->orWhere('id', $parent_id);
-                            })->orderBy('date')->orderBy('id', 'DESC')->first();
+                            })->orderBy('date', 'DESC')->orderBy('id', 'DESC')->first();
                         }
                     }
                     if(empty($_machineTypes)){
