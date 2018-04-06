@@ -127,7 +127,11 @@
                     <th>Loại thanh toán</th>
                     <th colspan="3">Action</th>
                 </tr>
-            <?php $total = 0 ?>
+            <?php $total = 0;
+                if(!empty($listPrice) && !empty($machine->machine_type_id) && !empty($listPrice[$machine->machine_type_id])){
+                    $total += $listPrice[$machine->machine_type_id];
+                }
+            ?>
             @if(!empty($listReceives) && !empty($listReceives[$machine->id]))
                 @foreach($listReceives[$machine->id] as $listReceive)
                     <tr class="sub_table sub_table_{!! $machine->id !!}">
@@ -158,7 +162,7 @@
                 @endforeach
             @endif
             </tbody>
-            <tr id="div_total_{!! $machine->id !!}" style="{!! !empty($listReceives) && !empty($listReceives[$machine->id]) ? "" : "display:none" !!}">
+            <tr id="div_total_{!! $machine->id !!}">
                 <td></td>
                 <td></td>
                 <td></td>
@@ -561,11 +565,11 @@
                var div = $('#div_sub_table_' + customer_devices_id).find('tr');
                if(div.length == 1) {
                    $('.sub_table_' + customer_devices_id).css("display", "");
-                   $('#div_total_' + customer_devices_id).css("display", "");
                }
                $('#div_sub_table_' + customer_devices_id).append(_html);
                var totalMoney = $('span.total_' + customer_devices_id).text();
-               totalMoney = totalMoney.replace(',', '.').replace(' ', '');
+
+               totalMoney = totalMoney.replace(',', '.').replace(/ /g, '');
                if(tralai == 3){
 
                    totalMoney = parseFloat(parseFloat(totalMoney) - parseFloat(amount_money)).toFixed(2);
@@ -584,7 +588,7 @@
                 var tralai = $($(this).parent().parent()).data('tralai');
                 var money = $('#money_' +id).data('money');
                 var totalMoney = $('span.total_' + parent_id).text();
-                totalMoney = totalMoney.replace(',', '.').replace(' ', '');
+                totalMoney = totalMoney.replace(',', '.').replace(/ /g, '');
                 if(tralai == 3){
 
                     totalMoney = parseFloat(parseFloat(totalMoney) + parseFloat(money)).toFixed(2);

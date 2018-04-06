@@ -25,6 +25,10 @@ class UpdateMachineTypeRequest extends FormRequest
      */
     public function rules()
     {
-        return MachineType::$rules;
+        return [
+            'name' => 'required|max:255',
+            'price' => 'required',
+            'date' => 'required'
+        ];
     }
 }

@@ -110,6 +110,7 @@ class Machine extends Model
                 $minD = $start[2] . '-' . $start[1];
                 $maxD = date('Y-m');
                 $i = 0;
+                $listId = [];
                 while ($minD <= $maxD){
                     $i++;
                     $time = strtotime($maxD . '-01');
@@ -122,9 +123,10 @@ class Machine extends Model
                             ->orWhere('id', $parent_id);
                     })->orderBy('date')->orderBy('id', 'DESC')->first();
                     if(empty($_machineTypes)){
-                        if(!isset($lastDate)){
-                            $_machineTypes = MachineType::where(function ($query) use ($lastDate, $date) {
-                                $query->whereBetween('date', [$lastDate, $date]);
+                        if(!isset($listId)){
+                            $_machineTypes = MachineType::where(function ($query) use ($listId, $date) {
+                                $query->where('date', ">=", $date)
+                                ->whereNotIn('id', $listId);
                             })->where(function ($query) use ($parent_id) {
                                 $query->where('parent_id', $parent_id)
                                     ->orWhere('id', $parent_id);
@@ -148,8 +150,8 @@ class Machine extends Model
                         } else {
                             $tien += $_machineTypes->price;
                         }
+                        $listId[$_machineTypes->id] = $_machineTypes->id;
                     }
-                    $lastDate = date("m/Y", strtotime($time));
                     $maxD = date("Y-m", strtotime("-1 month", $time));
                 }
             } else {

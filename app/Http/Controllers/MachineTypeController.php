@@ -33,7 +33,7 @@ class MachineTypeController extends AppBaseController
     public function index(Request $request)
     {
         $this->machineTypeRepository->pushCriteria(new RequestCriteria($request));
-        $machineTypes = DB::table('machine_types')->orderBy('id', 'DESC')->get();
+        $machineTypes = DB::table('machine_types')->orderBy('id', 'DESC')->where('deleted_at', null)->get();
         $listMachineTypes = [];
         $listParent = [];
         foreach ($machineTypes as $machineType){
@@ -43,11 +43,43 @@ class MachineTypeController extends AppBaseController
                     $listMachineTypes[$machineType->id] = $machineType;
                 }
             } else {
+                // tinh toan lai lay ngay thuc.
+                $date = date('m/Y');
+                $parent_id = $machineType->parent_id;
+                $_machineTypes = MachineType::where(function ($query) use ($date) {
+                    $query->where('date', '=', $date);
+                })->where(function ($query) use ($parent_id) {
+                    $query->where('parent_id', $parent_id)
+                        ->orWhere('id', $parent_id);
+                })->orderBy('date')->orderBy('id', 'DESC')->first();
+                if(empty($_machineTypes)){
+                    if(!isset($listId)){
+                        $_machineTypes = MachineType::where(function ($query) use ( $date) {
+                            $query->where('date', ">=", $date);
+                        })->where(function ($query) use ($parent_id) {
+                            $query->where('parent_id', $parent_id)
+                                ->orWhere('id', $parent_id);
+                        })->orderBy('date')->orderBy('id', 'DESC')->first();
+                    }
+                }
+                if(empty($_machineTypes)){
+                    $_machineTypes = MachineType::where(function ($query) use ($date) {
+                        $query->where('date', null);
+                    })->where(function ($query) use ($parent_id) {
+                        $query->where('parent_id', $parent_id)
+                            ->orWhere('id', $parent_id);
+                    })->orderBy('date')->orderBy('id', 'DESC')->first();
+                }
+
                 $listParent[$machineType->parent_id] = $machineType->parent_id;
                 if(!empty($listMachineTypes[$machineType->parent_id])){
 
                 } else {
-                    $listMachineTypes[$machineType->parent_id] = $machineType;
+                    if(!empty($_machineTypes)){
+                        $listMachineTypes[$machineType->parent_id] = $_machineTypes;
+                    } else {
+                        $listMachineTypes[$machineType->parent_id] = $machineType;
+                    }
                 }
             }
         }
@@ -120,8 +152,15 @@ class MachineTypeController extends AppBaseController
 
             return redirect(route('machineTypes.index'));
         }
+        $parent_id = $machineType->parent_id;
+        if(!empty($parent_id)){
+            $lists = MachineType::whereIn('id', [$id, $parent_id])
+                ->orWhere('parent_id', $parent_id)->get();
+        } else {
+            $lists = MachineType::where('id', $id)->get();
+        }
 
-        return view('machine_types.edit')->with('machineType', $machineType);
+        return view('machine_types.edit')->with('machineType', $machineType)->with('lists', $lists);
     }
 
     /**
@@ -144,7 +183,14 @@ class MachineTypeController extends AppBaseController
         $inputs = $request->only('price', 'date');
         $data = $request->only('price', 'date', 'name');
         if(!empty($machineType->parent_id)){
-            $check = MachineType::where('date', $inputs['date'])->where('parent_id', $machineType->parent_id)->first();
+            $date = $inputs['date'];
+            $parent_id = $machineType->parent_id;
+            $check = MachineType::where(function ($query) use ($date) {
+                $query->where('date', '=', $date);
+            })->where(function ($query) use ($parent_id) {
+                $query->where('parent_id', $parent_id)
+                    ->orWhere('id', $parent_id);
+            })->orderBy('date')->orderBy('id', 'DESC')->first();
             if(!empty($check)){
                 $this->machineTypeRepository->update($inputs, $id);
                 Flash::success('Machine Type updated successfully.');
