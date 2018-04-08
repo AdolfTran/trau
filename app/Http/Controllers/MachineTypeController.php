@@ -44,7 +44,7 @@ class MachineTypeController extends AppBaseController
                 }
             } else {
                 // tinh toan lai lay ngay thuc.
-                $date = date('m/Y');
+                $date = date('Y-m');
                 $parent_id = $machineType->parent_id;
                 $_machineTypes = MachineType::where(function ($query) use ($date) {
                     $query->where('date', '=', $date);
@@ -54,7 +54,7 @@ class MachineTypeController extends AppBaseController
                 })->orderBy('id', 'DESC')->first();
                 if(empty($_machineTypes)){
                     $_machineTypes = MachineType::where(function ($query) use ( $date) {
-                        $query->where('date', "<=", $date);
+                        $query->where('date', "<", $date);
                     })->where(function ($query) use ($parent_id) {
                         $query->where('parent_id', $parent_id)
                             ->orWhere('id', $parent_id);
@@ -189,7 +189,7 @@ class MachineTypeController extends AppBaseController
                     ->orWhere('id', $parent_id);
             })->orderBy('date')->orderBy('id', 'DESC')->first();
             if(!empty($check)){
-                $this->machineTypeRepository->update($inputs, $id);
+                $this->machineTypeRepository->update($inputs, $check->id);
                 Flash::success('Machine Type updated successfully.');
                 return redirect(route('machineTypes.index'));
             }

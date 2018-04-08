@@ -190,20 +190,22 @@ class CustomerController extends AppBaseController
 
         $_machineTypes = MachineType::all();
         $machineTypes = array();
+        $types = array();
         $listPrice = [];
-        $listParent = [];
         foreach($_machineTypes as $_machineType)
         {
             if($_machineType->parent_id == null){
+                $types[$_machineType['id']] = $_machineType['name'] . ' - ' . $_machineType['price'];
                 $listPrice[$_machineType['id']] = $_machineType['price'];
                 $machineTypes[$_machineType['id']] = $_machineType['name'] . ' - ' . $_machineType['price'];
-                $listParent[$_machineType->id] = $_machineType->id;
             } else {
                 // tinh toan lai lay ngay thuc.
-                $date = date('m/Y');
+                $date = date('Y-m');
 
                 if(!empty($requestDate)){
-                    $date = $requestDate['date'];
+                    $_x = explode('/', $requestDate['date']);
+
+                    $date = $_x[1] . '-' . $_x[0];
                 }
                 $parent_id = $_machineType->parent_id;
                 unset($machineTypes[$parent_id]);
@@ -215,7 +217,7 @@ class CustomerController extends AppBaseController
                 })->orderBy('id', 'DESC')->first();
                 if(empty($_machineTypes)){
                     $_machineTypes = MachineType::where(function ($query) use ( $date) {
-                        $query->where('date', "<=", $date);
+                        $query->where('date', "<", $date);
                     })->where(function ($query) use ($parent_id) {
                         $query->where('parent_id', $parent_id)
                             ->orWhere('id', $parent_id);
@@ -229,29 +231,18 @@ class CustomerController extends AppBaseController
                             ->orWhere('id', $parent_id);
                     })->orderBy('id', 'DESC')->first();
                 }
-                if(in_array($_machineType->parent_id, $listParent)){
-                    if(!empty($machineTypes[$_machineType->parent_id])){
-                    } else {
-                        $listPrice[$_machineTypes['parent_id']] = $_machineTypes['price'];
-                        $machineTypes[$_machineTypes['parent_id']] = $_machineTypes['name'] . ' - ' . $_machineTypes['price'];
+                if($parent_id){
+                    $mCt = MachineType::where('parent_id', $parent_id)->orderBy('id', 'DESC')->first();
+                    if(!empty($mCt)){
+                        $machineTypes[$mCt->id] = $_machineType['name'] . ' - ' . $_machineType['price'];
+                    }
+                    if(!empty($_machineTypes)){
+                        $types[$_machineType['id']] = $_machineTypes['name'] . ' - ' . $_machineTypes['price'];
+                        $listPrice[$_machineType['id']] = $_machineTypes['price'];
                     }
                 }
             }
         }
-        $subMT = [];
-        $subLp = [];
-        foreach ($listParent as $parent){
-            $v = MachineType::where('parent_id', $parent)->orderBy('id', 'DESC')->first();
-            if(!empty($machineTypes[$parent])){
-
-                $subMT[$v->id] = $machineTypes[$parent];
-            }
-            if(!empty($listPrice[$parent])){
-
-                $subLp[$v->id] = $listPrice[$parent];
-            }
-        }
-
         if (empty($customer)) {
             Flash::error('Customer not found');
 
@@ -305,11 +296,10 @@ class CustomerController extends AppBaseController
         foreach ($receives as $receive){
             $listReceives[$receive['customer_devices_id']][] = $receive;
         }
-
         return view('machines.show')->with('customer', $customer)->with('machines', $machines)
-            ->with('machineTypes', $subMT)->with('totalMoney', $totalMoney)
-            ->with('id', $id)->with('listReceives', $listReceives)->with('listPrice', $subLp)
-            ->with('listDate', $listDate)->with('_m', $_m);
+            ->with('machineTypes', $machineTypes)->with('totalMoney', $totalMoney)
+            ->with('id', $id)->with('listReceives', $listReceives)->with('listPrice', $listPrice)
+            ->with('listDate', $listDate)->with('_m', $_m)->with('types', $types);
     }
 
     public function reset(Request $request)

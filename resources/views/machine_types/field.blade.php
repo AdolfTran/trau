@@ -11,7 +11,7 @@
 </div>
 <div class="form-group col-sm-4">
     {!! Form::label('price', 'Ngày tháng:') !!}
-    {!! Form::text('date', null, ['class' => 'form-control',  'data-provide' => 'datepicker', 'data-date-format' => 'mm/yyyy']) !!}
+    {!! Form::text('date', null, ['class' => 'form-control',  'data-provide' => 'datepicker', 'data-date-format' => 'yyyy-mm']) !!}
 </div>
 
 <!-- Submit Field -->

@@ -34,7 +34,6 @@ class DashboardController extends Controller
             }
             // tinh tong so tien phai tra
             $machines = DB::table('tb_customer_devices')->where('user_id', Auth::user()->id)->get();
-            $machinesTypes = MachineType::pluck('price', 'id');
             $totalMoney = 0;
             foreach ($machines as $machine)
             {
@@ -57,9 +56,62 @@ class DashboardController extends Controller
             foreach ($receives as $receive){
                 $listReceives[$receive['customer_devices_id']][] = $receive;
             }
+            // show list nap tien.
+            $listNapTien = Receive::where('user_id', Auth::user()->id)
+                ->where('months', $_m)
+                ->where('tralai', 1)
+                ->orderBy('tralai')->get();
+            // tinh price
+            $_machineTypes = MachineType::all();
+            $types = array();
+            $listPrice = [];
+            foreach($_machineTypes as $_machineType)
+            {
+                if($_machineType->parent_id == null){
+                    $types[$_machineType['id']] = $_machineType['name'] . ' - ' . $_machineType['price'];
+                    $listPrice[$_machineType['id']] = $_machineType['price'];
+                } else {
+                    // tinh toan lai lay ngay thuc.
+                    $date = date('Y-m');
+                    $parent_id = $_machineType->parent_id;
+                    $_machineTypes = MachineType::where(function ($query) use ($date) {
+                        $query->where('date', '=', $date);
+                    })->where(function ($query) use ($parent_id) {
+                        $query->where('parent_id', $parent_id)
+                            ->orWhere('id', $parent_id);
+                    })->orderBy('id', 'DESC')->first();
+                    if(empty($_machineTypes)){
+                        $_machineTypes = MachineType::where(function ($query) use ( $date) {
+                            $query->where('date', "<", $date);
+                        })->where(function ($query) use ($parent_id) {
+                            $query->where('parent_id', $parent_id)
+                                ->orWhere('id', $parent_id);
+                        })->orderBy('date', 'DESC')->orderBy('id', 'DESC')->first();
+                    }
+                    if(empty($_machineTypes)){
+                        $_machineTypes = MachineType::where(function ($query) use ($date) {
+                            $query->where('date', null);
+                        })->where(function ($query) use ($parent_id) {
+                            $query->where('parent_id', $parent_id)
+                                ->orWhere('id', $parent_id);
+                        })->orderBy('id', 'DESC')->first();
+                    }
+                    if($parent_id){
+                        $mCt = MachineType::where('parent_id', $parent_id)->orderBy('id', 'DESC')->first();
+                        if(!empty($mCt)){
+                            $machineTypes[$mCt->id] = $_machineType['name'] . ' - ' . $_machineType['price'];
+                        }
+                        if(!empty($_machineTypes)){
+                            $types[$_machineType['id']] = $_machineTypes['name'] . ' - ' . $_machineTypes['price'];
+                            $listPrice[$_machineType['id']] = $_machineTypes['price'];
+                        }
+                    }
+                }
+            }
 
             return view('dashboard.view')->with('revenueMonth', $revenueMonth)->with('listMachines', $listMachines)
-                ->with('totalMoney', $totalMoney)->with('machines', $machines)->with('listReceives', $listReceives);
+                ->with('totalMoney', $totalMoney)->with('machines', $machines)->with('listReceives', $listReceives)
+                ->with('listNapTien', $listNapTien)->with('listPrice', $listPrice)->with('types', $types);
         }
         $countCustomer = DB::table('users')->where('role', 3)->count();
         $listMachines = DB::table('tb_customer_devices')->where('deleted_at', NULL)->pluck('machine_type_id', 'id');

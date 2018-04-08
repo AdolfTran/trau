@@ -103,7 +103,7 @@
                 <td>{!! $machine->ip !!}</td>
                 <td>{!! $machine->sale_place !!}</td>
                 <td>{!! $machine->code !!}</td>
-                <td data-id="{!! $machine->machine_type_id !!}">{!! $machine->machine_type_id && !empty($machineTypes[$machine->machine_type_id]) ? $machineTypes[$machine->machine_type_id] : '' !!}</td>
+                <td data-id="{!! $machine->machine_type_id !!}">{!! $machine->machine_type_id && !empty($types[$machine->machine_type_id]) ? $types[$machine->machine_type_id] : '' !!}</td>
                 <td>{!! $machine->machine_number !!}</td>
                 <td data-id="{!! $machine->id !!}">
                     <div class='btn-group'>

@@ -85,6 +85,7 @@
             <!-- /.row -->
         </section>
         <!-- /.content -->
+        <h4>Danh sách máy</h4>
         <div class="row box box-primary">
             <table class="table table-responsive" id="customer-devices-table">
                 <thead>
@@ -105,7 +106,7 @@
                 $loaiThanhToan = [
                     '1' => 'Thu tiền',
                     '2' => 'Phụ thu',
-                    '3' => 'Trả lại'
+                    '3' => 'Hoàn tiền máy off'
                 ];
                 ?>
                 @foreach($machines as $machine)
@@ -117,7 +118,7 @@
                         <td>{!! $machine->ip !!}</td>
                         <td>{!! $machine->sale_place !!}</td>
                         <td>{!! $machine->code !!}</td>
-                        <td data-id="{!! $machine->machine_type_id !!}">{!! $machine->machine_type_id && !empty($machineTypes[$machine->machine_type_id]) ? $machineTypes[$machine->machine_type_id] : '' !!}</td>
+                        <td data-id="{!! $machine->machine_type_id !!}">{!! $machine->machine_type_id && !empty($types[$machine->machine_type_id]) ? $types[$machine->machine_type_id] : '' !!}</td>
                         <td>{!! $machine->machine_number !!}</td>
                     </tr>
                 <tbody id="div_sub_table_{!! $machine->id !!}">
@@ -132,7 +133,11 @@
                     <th>Ghi chú</th>
                     <th>Loại thanh toán</th>
                 </tr>
-                <?php $total = 0 ?>
+                <?php $total = 0;
+                    if(!empty($listPrice) && !empty($machine->machine_type_id) && !empty($listPrice[$machine->machine_type_id])){
+                        $total += $listPrice[$machine->machine_type_id];
+                    }
+                ?>
                 @if(!empty($listReceives) && !empty($listReceives[$machine->id]))
                     @foreach($listReceives[$machine->id] as $listReceive)
                         <tr class="sub_table sub_table_{!! $machine->id !!}">
@@ -158,7 +163,7 @@
                     @endforeach
                 @endif
                 </tbody>
-                <tr id="div_total_{!! $machine->id !!}" style="{!! !empty($listReceives) && !empty($listReceives[$machine->id]) ? "" : "display:none" !!}">
+                <tr id="div_total_{!! $machine->id !!}">
                     <td></td>
                     <td></td>
                     <td></td>
@@ -168,6 +173,36 @@
                     <td>Total</td>
                     <td colspan="2"><span class="total_{!! $machine->id !!}">{!! number_format($total, 2, ",", " ") !!}</span> VND</td>
                 </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+        <h4>Lịch sử nạp tiền</h4>
+        <div class="row box box-primary">
+            <table class="table table-responsive" id="customer-devices-table">
+                <thead>
+                <?php $i =1; ?>
+                <tr class="main_table">
+                    <th>#</th>
+                    <th>Số tiền</th>
+                    <th>Tháng</th>
+                    <th>Ngày nạp</th>
+                    <th>Người nạp</th>
+                    <th>Người thu</th>
+                    <th>Ghi chú</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($listNapTien as $_listNapTien)
+                    <tr>
+                        <td>{!! $i++ !!}</td>
+                        <td>{!! number_format($_listNapTien->amount_money, 2, ",", " ") !!} VND</td>
+                        <td>{!! $_listNapTien->months !!}</td>
+                        <td>{!! $_listNapTien->date !!}</td>
+                        <td>{!! $_listNapTien->sender !!}</td>
+                        <td>{!! $_listNapTien->receiver !!}</td>
+                        <td>{!! $_listNapTien->description !!}</td>
+                    </tr>
                 @endforeach
                 </tbody>
             </table>

@@ -103,6 +103,9 @@ class Machine extends Model
         $machinesTypes = MachineType::pluck('price', 'id');
         if(!empty($machine->machine_type_id)) {
             $machineType = MachineType::where('id', $machine->machine_type_id)->first();
+            if(empty($machineType)){
+                return;
+            }
             $parent_id = $machineType->parent_id;
             if(!empty($parent_id)){
                 //doan nay tinh tien tung thang.
@@ -115,7 +118,7 @@ class Machine extends Model
                     $i++;
                     $time = strtotime($maxD . '-01');
                     // tinh tien
-                    $date = date('m/Y', $time);
+                    $date = date('Y-m', $time);
                     $_machineTypes = MachineType::where(function ($query) use ($date) {
                         $query->where('date', '=', $date);
                     })->where(function ($query) use ($parent_id) {
