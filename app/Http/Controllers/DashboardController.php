@@ -53,6 +53,7 @@ class DashboardController extends Controller
                 ->where('months', $_m)
                 ->where('tralai', '!=', 1)
                 ->orderBy('tralai')->get();
+            $listReceives = array();
             foreach ($receives as $receive){
                 $listReceives[$receive['customer_devices_id']][] = $receive;
             }
