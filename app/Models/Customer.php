@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class Customer
@@ -53,5 +54,16 @@ class Customer extends Model
         'date' => 'required'
     ];
 
+    public static function sendEmail($customerId, $title =""){
+        if($customerId) {
+            $email = 'ductranminhitqb@gmail.com';
+            $data = array('name' => "Damintech support");
+            Mail::send('mail', $data, function ($message) use ($email) {
+                $message->to($email, 'Event')->subject('Đăng ký thành công');
+            });
+            return true;
+        }
+        return false;
+    }
     
 }

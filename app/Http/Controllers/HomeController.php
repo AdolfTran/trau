@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -57,5 +58,11 @@ class HomeController extends Controller
             Flash::error('The password not changed');
             return view('auth.profile');
         }
+    }
+
+    public function testSendMail()
+    {
+        $result = Customer::sendMail(1, 'test');
+        dd($result);
     }
 }
