@@ -62,7 +62,7 @@ class HomeController extends Controller
 
     public function testSendMail()
     {
-        $result = Customer::sendMail(1, 'test');
+        $result = Customer::sendEmail(1, 'test');
         dd($result);
     }
 }

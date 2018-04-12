@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
+<p>test send mail</p>
 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;padding:0;margin:0 auto;background-color:#ebebeb;font-size:12px">
     <tbody>
     <tr>
