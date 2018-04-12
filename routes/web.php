@@ -39,4 +39,4 @@ Route::get('receives/showReceive/{id}', 'ReceiveController@showReceive')->name('
 Route::get('receives/add/{id}', 'ReceiveController@add');
 
 Route::resource('receives', 'ReceiveController');
-Route::get('/testsend', 'HomeController@testSendMail');
+Route::any('/cronjobSendMail', 'HomeController@conronjobsendMail');

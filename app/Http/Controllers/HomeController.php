@@ -60,9 +60,19 @@ class HomeController extends Controller
         }
     }
 
-    public function testSendMail()
+    public function conronjobsendMail()
     {
-        $result = Customer::sendEmail(1, 'test');
+        $email = "trunghaitk@gmail.com";
+        $customerId = User::where('email', $email)->first();
+        $customerId = !empty($customerId) ? $customerId->id : null;
+        if(is_null($customerId)){
+            echo "khong co tai khoan nay";
+            dd(1);
+        }
+        // tinh tien cho khach.
+        $data = Customer::tinhTien($customerId);
+        $result = Customer::sendEmail($data, $email, "Thanh toan thang " . date('m/Y'));
         dd($result);
+        return json_encode($result);
     }
 }
