@@ -28,7 +28,7 @@ Route::group(['middleware' => 'editor'], function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::any('/profile', 'HomeController@profile');
     Route::any('/change_pass', 'HomeController@change');
-    Route::get('/dashboard', 'DashboardController@index');
+    Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
     Route::get('/', 'DashboardController@index');
 });
 Route::resource('machines', 'MachineController');
