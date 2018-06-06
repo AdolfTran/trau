@@ -45,7 +45,6 @@ class LoginController extends Controller
         $auth = \Auth::guard();
         if ($auth->attempt($inputs))
         {
-            dd($auth);
             $email = $auth->email;
             $title = "Mật khẩu đã được thay đổi";
             $_password = rand(111111, 999999);
